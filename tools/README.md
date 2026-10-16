@@ -106,6 +106,8 @@ python3 tools/voice_words.py takes/L1_t*.wav --emphasis late --json work/takes.j
 
 The report lists each word's start, end, peak level, share of voiced frames and pitch against the take's median, and flags words under 35 per cent voiced (`whisper?`). Some flags are only unvoiced consonants, so check them on the spectrogram: harmonics mean voiced, and formants over noise mean breath. An emphasis word passes with a pause of 0.3 s or more before it, a peak 3 semitones or more over the median, a level at or above the line's, and its voicing.
 
+For a bass voice, add `--fmin 40`: its falls dip under the default 60 Hz pitch floor and read as unvoiced. The longer analysis frame this needs blurs short words, so judge those on the spectrogram.
+
 ## Mix and delivery
 
 ```sh
@@ -116,7 +118,7 @@ python3 tools/asr_check.py out/v3/film.mp4 out/v3/script.txt --variants edit/nam
 
 - `vo_over_bed.py` reads the voice lines from `edit.json` as `{"vo": [{"id": "L1", "start": 0.5, "words": [[0.0, 0.42, "Fridays"], ...]}]}`, with word times relative to the line's start. The gate is 8 LU.
 - `pops.py` lists frames that flash for one frame and fails on black segments of 0.08 s or longer. Designed cuts appear as pops too, so compare them with the beat sheet.
-- `asr_check.py` aligns letters, not words, so "follow-ups" heard as "follow ups" still counts. Names the recognizer spells another way go in the variants file. The gate is 97 per cent.
+- `asr_check.py` aligns letters, not words, so "follow-ups" heard as "follow ups" still counts. Names the recognizer spells another way go in the variants file. The gate is 97 per cent. Whisper can end a long file's window early after a music gap and skip the speech that follows; when the full pass misses words, the tool hears the film again in 30 s windows every 15 s and counts a word that either pass heard.
 
 ## Score
 

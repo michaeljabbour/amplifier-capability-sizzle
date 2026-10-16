@@ -6,7 +6,7 @@ A skill that helps agents direct and produce short kinetic brand films: 15 to 90
 
 The picture is drawn on an HTML canvas as a pure function of time and rendered frame by frame, so picture and sound stay locked and every frame can be checked. The skill works in agent hosts that can see images and in hosts that cannot, because each quality bar is something to measure as well as something to look at.
 
-This project pairs the reusable [`sizzle` skill](SKILL.md) with its [tools](tools/README.md), a [reference of client lessons](references/lessons.md) and an explanatory static website.
+This project pairs the reusable [`sizzle` skill](SKILL.md) with its [tools](tools/README.md), a [reference of client lessons](references/lessons.md) and an explanatory static website. The website opens with a 60-second reel made with the skill and audited with its own tools; [docs/REEL.md](docs/REEL.md) tells how.
 
 ## Use the skill
 
@@ -68,7 +68,7 @@ The Pages workflow builds and checks `_site/` on pushes to `main`, then publishe
 
 Sizzle is a set of instructions and tools for an agent with a shell, a headless browser and audio tools. It does not render films by itself, and it cannot listen: voice, music and mix checks are measurements, and a person still needs to hear the film. The layout audit sees only what the canvas draws through `fillText` and `drawImage`; shapes and text baked into images are checked by eye or against their originals. The contrast check is an estimate.
 
-The text-to-speech adapters were checked against a local stand-in for each service and with a local engine, not against the live services. The site's film is invented for explanation, and its findings come from its own frames; they are not evidence about any real film. The lessons in `references/lessons.md` come from two real productions, described without client or personal names.
+The text-to-speech adapters were checked against a local stand-in for each service and with a local engine, not against the live services. The site's film is invented for explanation, and its findings come from its own frames; they are not evidence about any real film. The homepage reel's narrator, score and most sound effects were generated with ElevenLabs. The lessons in `references/lessons.md` come from two real productions, described without client or personal names.
 
 ## License and provenance
 

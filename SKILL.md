@@ -169,7 +169,7 @@ Its largest change lands on the turn or the payoff. Never drain the motif to sat
 
 - **Casting brief:** accent, age, register, warmth against authority and pace, matched to the audience, the room and the user's direction.
 - **Cast every film for its own audience.** The opener first reused the teaser's voice, whose accent was not the staff audience's own, and that was the first note. Recast as a warm voice in the audience's accent, it landed.
-- **Choose by measurement:** shortlist two or three voices, generate the turn line with each, and choose by measurement against the brief.
+- **Choose by measurement, then by ear:** shortlist two or three voices, generate the turn line with each, and reject takes by measurement. Measurement cannot hear drama, so play the finalists to the client in context, on the film's sync points over the real bed, and start from voices the client has already approved. On the reel, two measured recasts lost to the first narrator.
 - **Direct each line** through its attitude and its emphasis word, written as punctuation (3.1).
 - **Audio tags:** use them sparingly and measure what they did. `[confident]` on a short title gave four whispered takes.
 
@@ -301,6 +301,7 @@ Fix every failure before step 5. If the user is present, send the package and ca
   - take the onsets of the words the picture keys to from energy islands and the pitch contour, since Whisper drifts by up to 0.2 s on short words;
   - run pYIN for pitch and voicing. Under about 35 per cent voiced frames on a mostly voiced word is a whisper; reject it.
   - pYIN also misses breathy and creaky voice. Confirm on a spectrogram with the pitch track and the word marks drawn on it: harmonics mean voiced; formants over noise mean breath. Look at it if you have eyes.
+  - a bass voice's falls dip under pYIN's 60 Hz floor and read as unvoiced: measure it with `--fmin 40`, and judge short words like "Stop." on the spectrogram, since the longer frame blurs them.
   - a statement's final fall should be at least 2 semitones.
 - **Each emphasis word** needs a pause of at least 0.3 s before it, a peak at least 3 semitones over the line median, and a level at or above the rest of the line.
 - **Fixing a failing word:** re-voice that line alone, with its neighbors as context and plain punctuation.

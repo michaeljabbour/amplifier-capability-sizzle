@@ -1,7 +1,7 @@
 {
   "name": "amplifier-skill-sizzle",
   "displayName": "Sizzle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A skill that helps agents direct and produce short kinetic brand films with a narrator, a score and cut-downs, then measure every frame and the mix, with a static explanatory site.",
   "license": "MIT",
   "private": false,

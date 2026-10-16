@@ -1,6 +1,6 @@
 # Lessons from client notes
 
-Each note below changed a rule in `SKILL.md`; the section it led to is in brackets. The two films are the teaser (a 60 s teaser for an executive education program) and the opener (a company's internal event opener, six versions). The notes are paraphrased and shortened. Read them when a new note arrives. Diagnose with measurement, fix the cause, and report before and after numbers.
+Each note below changed a rule in `SKILL.md`; the section it led to is in brackets. The films are the teaser (a 60 s teaser for an executive education program), the opener (a company's internal event opener, six versions) and the reel (this project's own 60 s homepage film). The notes are paraphrased and shortened. Read them when a new note arrives. Diagnose with measurement, fix the cause, and report before and after numbers.
 
 ## From the teaser
 
@@ -20,6 +20,10 @@ Each note below changed a rule in `SKILL.md`; the section it led to is in bracke
 - **Less slide template, more of the bright colors.** Each moment became a full field of its template color, opening from where its number sits, and the template's corner furniture went. [3.9]
 - **Weave the opening back in, and bring back the leads.** The score grew by whole bars, every line was re-placed by rule, and the leads got a tour of two beats each. [3.7, 5.2, 8.5]
 - **Weave in the team's slogan.** Every spoken take breathed out its last word, so the slogan plays in type, on the music. [3.1]
+
+## From the reel
+
+- **A different male voice would be better.** Three voices were cast on the turn line by measurement, auditioned in context, and the pick voiced the script. The next note: none of them is dramatic. An alto the client had approved on an earlier film read the whole script in one pass, and the note after that kept the first narrator. Measurement rejects bad takes; the client's ear chooses. Check the speech provider's credit balance before a full re-record: the last recast got two of its four takes. [3.4]
 
 ## What the audit found after the eyes had looked
 

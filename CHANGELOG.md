@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 (2026-10-16)
+
+- Open the homepage with a 60-second reel made with Sizzle, in the order the skill sets out, and audited with its own tools. It ships with captions, a poster and a 15-second cut, and [docs/REEL.md](docs/REEL.md) tells how it was made and what each check measured.
+- `tools/voice_words.py --fmin`: a bass voice's falls dip under the default 60 Hz pitch floor and read as unvoiced; `--fmin 40` measures them.
+- `tools/asr_check.py`: when Whisper's full pass skips speech after a long music gap, a second pass hears the film in 30 s windows and counts a word that either pass heard.
+- The site check covers video posters and caption files, and fails on metadata inside MP4 files.
+
 ## 0.1.0 (2026-10-16)
 
 - Publish the `sizzle` skill with the lessons of its sixth production round: keep the word that must land out of the last, unstressed place; confirm breathy voice on a spectrogram; teach the layout audit about masks, clips and covers; follow drifting strings; give the motion audit its marked windows; never double-expose a wipe or an iris; keep random sequences stable across versions; lengthen a score by whole bars; deliver a director's transcript on request.

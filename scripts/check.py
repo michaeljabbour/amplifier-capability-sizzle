@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 sys.dont_write_bytecode = True
 from build import BUNDLE, skill_files  # noqa: E402
 
-TEXT = {'.md', '.py', '.mjs', '.js', '.html', '.css', '.json', '.yml', '.svg', '.txt', ''}
+TEXT = {'.md', '.py', '.mjs', '.js', '.html', '.css', '.json', '.yml', '.svg', '.txt', '.vtt', ''}
 
 
 class Page(HTMLParser):
@@ -34,7 +34,7 @@ class Page(HTMLParser):
             if attrs['id'] in self.ids:
                 self.duplicates.append(attrs['id'])
             self.ids.add(attrs['id'])
-        for key in ('href', 'src'):
+        for key in ('href', 'src', 'poster'):
             if key in attrs:
                 self.references.append(attrs[key])
         if 'download' in attrs:
@@ -99,7 +99,31 @@ def privacy_and_style():
             else:
                 assert b'Exif' not in data[:4096] and b'http://ns.adobe.com/xap' not in data, f'JPEG metadata in {path.relative_to(ROOT)}'
             images += 1
-    return count, images
+    videos = 0
+    for path in sorted(ROOT.rglob('*.mp4')):
+        if '_site' in path.parts or '.git' in path.parts:
+            continue
+        moov = movie_box(path.read_bytes())
+        assert moov, f'No movie box in {path.relative_to(ROOT)}'
+        for tag in (b'\xa9xyz', b'\xa9day', b'\xa9nam', b'\xa9ART', b'\xa9cmt', b'location', b'creation_time', b'com.apple.quicktime'):
+            assert tag not in moov, f'Video metadata {tag!r} in {path.relative_to(ROOT)}'
+        videos += 1
+    return count, images, videos
+
+
+def movie_box(data):
+    """The MP4 'moov' box, where titles, dates and locations would live."""
+    i = 0
+    while i + 8 <= len(data):
+        size, kind = int.from_bytes(data[i:i + 4], 'big'), data[i + 4:i + 8]
+        if size == 1:
+            size = int.from_bytes(data[i + 8:i + 16], 'big')
+        if size < 8:
+            return None
+        if kind == b'moov':
+            return data[i:i + size]
+        i += size
+    return None
 
 
 def check(output):
@@ -150,13 +174,13 @@ def check(output):
         assert not re.search(r'@import|url\(\s*[\'"]?https?:', css), f'External CSS dependency: {name}'
     assert "default-src 'self'" in raw and "object-src 'none'" in raw
     body = skill_contract()
-    texts, images = privacy_and_style()
+    texts, images, videos = privacy_and_style()
     digest = hashlib.sha256((output / BUNDLE).read_bytes()).hexdigest()
     print(f'PASS: {local} local links/assets and fragments; no missing targets or duplicate IDs')
     print(f'PASS: {markdown} local destinations in shipped Markdown documentation')
     print(f'PASS: source textarea, SKILL.md download and {len(files)} bundle files match the repository byte for byte')
     print(f'PASS: skill contract (name sizzle, {body} body lines, every named tool and reference exists)')
-    print(f'PASS: {texts} text files free of emails, home paths, credential patterns and em dashes; {images} images without metadata')
+    print(f'PASS: {texts} text files free of emails, home paths, credential patterns and em dashes; {images} images and {videos} videos without metadata')
     print('PASS: two film cuts, local assets, static CSP, repository-subpath-safe links')
     print(f'Bundle SHA-256: {digest}')
 

@@ -2,11 +2,12 @@
 """Measure voice takes word by word (SKILL.md 5.3): timing, level, voicing and pitch, with emphasis checks.
 
     python3 tools/voice_words.py take1.mp3 [take2.mp3 ...] [--prompt "Names. Terms."]
-        [--emphasis yours,bigger] [--json takes.json] [--spectrogram takes.png] [--from s] [--to s]
+        [--emphasis yours,bigger] [--json takes.json] [--spectrogram takes.png] [--from s] [--to s] [--fmin 40]
 
 For each take: Whisper word times (faster-whisper, fed a 16 kHz float array), and for each word its peak
 level, the share of voiced frames (pYIN) and its pitch against the take's median. A mostly voiced word under
-about 35 per cent voiced frames is a whisper. pYIN also misses breathy and creaky voice, so --spectrogram
+about 35 per cent voiced frames is a whisper. A bass voice whose falls dip under 60 Hz reads as unvoiced
+there: pass --fmin 40, whose longer frame blurs short words (judge those on the spectrogram). pYIN also misses breathy and creaky voice, so --spectrogram
 draws each take with its pitch track and word marks: harmonics mean voiced, formants over noise mean breath.
 Whisper drifts by up to 0.2 s on short words, so the energy islands are listed too, for onsets.
 --emphasis checks each named word: a pause of 0.3 s or more before it, a peak 3 semitones or more over the
@@ -23,6 +24,11 @@ import numpy as np
 
 warnings.filterwarnings('ignore')
 SR, HOP = 24000, 240
+FMIN = 60.0   # pitch floor for pYIN; --fmin lowers it for bass voices, whose falls dip under 60 Hz and read as unvoiced
+
+
+def frame_len():
+    return 1024 if FMIN >= 47 else 2048   # the longest period must fit the frame
 
 
 def norm(word):
@@ -56,7 +62,7 @@ def measure(path, model, prompt, emphasis):
     y16 = librosa.resample(y, orig_sr=SR, target_sr=16000).astype(np.float32)
     segments, _ = model.transcribe(y16, word_timestamps=True, language='en', initial_prompt=prompt or None, vad_filter=False)
     words = [(w.start, w.end, w.word.strip(), w.probability) for s in segments for w in (s.words or [])]
-    f0, vflag, vprob = librosa.pyin(y, fmin=60, fmax=1000, sr=SR, frame_length=1024, hop_length=HOP)
+    f0, vflag, vprob = librosa.pyin(y, fmin=FMIN, fmax=1000, sr=SR, frame_length=frame_len(), hop_length=HOP)
     rms = librosa.feature.rms(y=y, frame_length=960, hop_length=HOP)[0]
     n = min(len(rms), len(f0))
     f0, vflag, vprob, db = f0[:n], vflag[:n], vprob[:n], 20 * np.log10(rms[:n] + 1e-9)
@@ -103,7 +109,7 @@ def spectrogram(paths, results, out, start, end):
         S = librosa.amplitude_to_db(np.abs(librosa.stft(y, n_fft=1024, hop_length=120)), ref=np.max)
         top = int(4000 / (SR / 1024))
         ax.imshow(S[:top], origin='lower', aspect='auto', extent=[a, b, 0, top * SR / 1024], cmap='magma', vmin=-80, vmax=0)
-        f0, _, _ = librosa.pyin(y, fmin=60, fmax=1000, sr=SR, frame_length=1024, hop_length=120)
+        f0, _, _ = librosa.pyin(y, fmin=FMIN, fmax=1000, sr=SR, frame_length=frame_len(), hop_length=120)
         level = 20 * np.log10(librosa.feature.rms(y=y, frame_length=1024, hop_length=120)[0] + 1e-9)[:len(f0)]
         f0 = np.where(level[:len(f0)] > level.max() - 40, f0[:len(level)], np.nan)   # no pitch dots in silence
         ax.plot(a + np.arange(len(f0)) * 120 / SR, f0, 'c.', ms=2)
@@ -128,7 +134,10 @@ def main():
     ap.add_argument('--spectrogram')
     ap.add_argument('--from', dest='start', type=float)
     ap.add_argument('--to', dest='end', type=float)
+    ap.add_argument('--fmin', type=float, default=60.0, help='pitch floor in Hz (default 60; about 40 for a bass voice)')
     args = ap.parse_args()
+    global FMIN
+    FMIN = args.fmin
     from faster_whisper import WhisperModel
     model = WhisperModel(args.model, device='cpu', compute_type='int8')
     emphasis = [norm(w) for w in args.emphasis.split(',') if norm(w)]
