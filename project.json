@@ -1,0 +1,20 @@
+{
+  "name": "amplifier-skill-sizzle",
+  "displayName": "Sizzle",
+  "version": "0.1.0",
+  "description": "A skill that helps agents direct and produce short kinetic brand films with a narrator, a score and cut-downs, then measure every frame and the mix, with a static explanatory site.",
+  "license": "MIT",
+  "private": false,
+  "runtime": "Python >=3.11 (build only); browser (static site). Tools: Node.js with Playwright, Python audio packages, ffmpeg.",
+  "dependencies": [],
+  "skill": "SKILL.md",
+  "build": "python3 scripts/build.py",
+  "check": "python3 scripts/check.py",
+  "output": "_site",
+  "publication": "Public source repository. Static site publishes to GitHub Pages from main.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle.git"
+  },
+  "homepage": "https://michaeljabbour.github.io/amplifier-skill-sizzle/"
+}

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sizzle tools fixture</title>
+<style>html, body { margin: 0; background: #111; } canvas { display: block; width: 100vw; height: auto; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script src="audit-hook.js"></script>
+<script>
+// A five-second composition with known problems. It shows the page contract and checks the tools:
+//   python3 -m http.server 8000                                        (from the tools folder)
+//   node lint.mjs "http://127.0.0.1:8000/fixture.html?audit=1" 5     -> 4 issues: SIZE, READ, SAFE, HIT
+//   node motion.mjs "http://127.0.0.1:8000/fixture.html?audit=1" 5   -> 1 element flagged (the dot)
+// The masked reveal, the wipe, the string the wipe covers and the marked burst are all clean.
+const W = 1920, H = 1080, canvas = document.getElementById('c');
+canvas.width = W; canvas.height = H;
+const ctx = canvas.getContext('2d');
+auditInstall(ctx, W, H);
+const ready = document.fonts ? document.fonts.ready : Promise.resolve();
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const ease = x => x * x * (3 - 2 * x);
+const text = (s, x, y, px, align = 'left') => { ctx.font = `${px}px Georgia, serif`; ctx.textAlign = align; ctx.fillText(s, x, y); };
+// Offscreen canvases carry an id, so the audit can tell them apart.
+const dot = Object.assign(document.createElement('canvas'), { id: 'dot', width: 48, height: 48 });
+const burst = Object.assign(document.createElement('canvas'), { id: 'burst', width: 48, height: 48 });
+for (const c of [dot, burst]) { const g = c.getContext('2d'); g.fillStyle = '#C8553D'; g.beginPath(); g.arc(24, 24, 22, 0, 2 * Math.PI); g.fill(); }
+
+function drawFrame(t) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1;
+  ctx.fillStyle = '#F4F1EA'; ctx.fillRect(0, 0, W, H); auditCover(1);
+  ctx.fillStyle = '#1D1F1A';
+  text('One idea per frame.', 160, 300, 84);                            // clean: large, held all film
+  const r = ease(clamp(t / 0.5));                                       // a masked reveal: cut to its mask, never a collision
+  ctx.save(); ctx.beginPath(); ctx.rect(150, 340, 1200 * r, 120); ctx.clip();
+  auditMask(150, 340, 150 + 1200 * r, 460); text('Revealed through a mask.', 160, 430, 72); auditUnmask(); ctx.restore();
+  if (t >= 1.0 && t < 1.6) text('Four words, too quick.', 160, 560, 64);  // READ: 0.6 s for four words
+  text('small print', 160, 640, 24);                                     // SIZE: 24 px, read at 36
+  text('Edge', 1880, 600, 48, 'right');                                  // SAFE: past 95 per cent of the width
+  text('Crowded', 1000, 760, 64); text('Overlapping', 1100, 780, 64);   // HIT: two strings collide
+  ctx.fillStyle = '#1D1F1A'; text('Under the field', 1500, 320, 56, 'center');   // covered once the wipe passes
+  const R = 420 * clamp((t - 1.8) / 0.6);                                // a circular wipe: only its inside can be seen
+  ctx.save(); ctx.beginPath(); ctx.arc(1500, 300, R, 0, 2 * Math.PI); ctx.clip(); auditClip(1500, 300, R);
+  ctx.fillStyle = '#386B61'; ctx.fillRect(0, 0, W, H); auditCover(1);
+  if (t >= 2.45) { ctx.fillStyle = '#FFFFFF'; text('Inside the wipe', 1500, 320, 56, 'center'); }
+  ctx.restore(); auditUnclip();
+  const x = t < 3 ? 400 : 400 + (t - 3) * 30 * 40;                       // jumps from rest to 40 px a frame: flagged
+  ctx.drawImage(dot, x - 24, 876);
+  const bx = t < 0.5 ? 1200 : 1200 + (t - 0.5) * 30 * 60;               // a burst inside a marked window: allowed
+  ctx.drawImage(burst, bx - 24, 966);
+}
+window.renderAt = async t => { await ready; drawFrame(t); return canvas.toDataURL('image/png'); };
+window.auditAt = async t => { await ready; return auditFrame(drawFrame, t); };
+window.getMarks = () => [[0.45, 1.2]];
+drawFrame(0);
+</script>
+</body>
+</html>

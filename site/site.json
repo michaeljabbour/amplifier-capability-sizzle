@@ -1,0 +1,43 @@
+{
+  "name": "Sizzle",
+  "version": "0.1.0",
+  "description": "A skill that helps agents direct and produce short kinetic brand films with a narrator, a score and cut-downs, and then measure every frame and the mix.",
+  "skill_name": "sizzle",
+  "theme": {"family": "Amplifier Smart Tools", "version": "0.1.0", "accent": "#9c4426"},
+  "film": {
+    "title": "Open late",
+    "brief": "An invented town library wants students to know it stays open until midnight on Fridays. Fourteen seconds, no sound on this page.",
+    "duration": 14,
+    "fps": 30,
+    "roles": {
+      "Where do you go after nine?": "story",
+      "The library stays open.": "story",
+      "Study rooms.": "story",
+      "Late coffee.": "story",
+      "Quiet.": "story",
+      "Study rooms · Late coffee · Quiet": "story",
+      "Fridays, open until midnight": "story",
+      "Open until midnight.": "story"
+    },
+    "cuts": [
+      {
+        "id": "first",
+        "label": "First cut",
+        "summary": "What a quick first pass looks like: everything on screen, nothing quite readable.",
+        "changes": []
+      },
+      {
+        "id": "checked",
+        "label": "After the checks",
+        "summary": "The same film after one round of fixes, each answering a finding.",
+        "changes": [
+          "The question holds 2.4 s, revealed through a mask, instead of flashing for 1 s.",
+          "The headline leaves through its mask instead of jumping into a slide.",
+          "The list became three moments of its own, at 72 px, inside the window.",
+          "The day joined the headline, and the window light becomes its full stop.",
+          "The library's name moved inside the safe area, under the headline."
+        ]
+      }
+    ]
+  }
+}
