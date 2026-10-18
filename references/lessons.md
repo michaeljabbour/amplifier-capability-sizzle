@@ -1,6 +1,6 @@
 # Lessons from client notes
 
-Each note below changed a rule in `SKILL.md`; the section it led to is in brackets. The films are the teaser (a 60 s teaser for an executive education program), the opener (a company's internal event opener, six versions) and the reel (this project's own 60 s homepage film). The notes are paraphrased and shortened. Read them when a new note arrives. Diagnose with measurement, fix the cause, and report before and after numbers.
+Each note below changed a rule in `SKILL.md`; the section it led to is in brackets. The films are the teaser (a 60 s teaser for an executive education program), the opener (a company's internal event opener, six versions), the reel (this project's own 60 s homepage film) and the lesson (a film for a skill that teaches a way of judging work). The notes are paraphrased and shortened. Read them when a new note arrives. Diagnose with measurement, fix the cause, and report before and after numbers.
 
 ## From the teaser
 
@@ -24,6 +24,17 @@ Each note below changed a rule in `SKILL.md`; the section it led to is in bracke
 ## From the reel
 
 - **A different male voice would be better.** Three voices were cast on the turn line by measurement, auditioned in context, and the pick voiced the script. The next note: none of them is dramatic. An alto the client had approved on an earlier film read the whole script in one pass, and the note after that kept the first narrator. Measurement rejects bad takes; the client's ear chooses. Check the speech provider's credit balance before a full re-record: the last recast got two of its four takes. [3.4]
+
+## From the lesson
+
+The first cut passed every technical gate: every word recognized, the layout lint clean, loudness on target. It was rejected on first viewing, and the notes were about the story, not the craft.
+
+- **The script doesn't say what this is for.** It showed edits and evidence but never the problem the product solves or its core thesis. Now the brief starts with the purpose, in plain words, taken from the repo or site, and the creative gate checks for it. [2, 4]
+- **You should have reviewed it with me first.** An hour of generation and rendering went into a script nobody had approved. Now a storyboard and script go to a person within minutes of the brief, and nothing is generated until they approve it. [4.1]
+- **It isn't accessible to non-technical viewers, and it isn't obvious what we are talking about.** The first storyboard used insider words (evaluations, rubric, scenarios) and an outage report as its example. The second used one everyday object anyone can judge in a second: a yard-sale sign seen from a passing car. [2]
+- **Define the ideas and teach people to use them; the product comes second.** The film became a lesson: two signs that fail in different ways, seen before either failure is named; each term defined on the sign that lacks it; a map and a question with a real silent pause; the two fixes; a three-second check; the same questions on an email, a slide, a room and an AI answer; three habits; and the product last. [2]
+- **The animation carried more than the meaning.** Motion now has to explain: one idea per beat, edits drive the moves, no kinetic type for its own sake. The gates measure craft, not meaning. [3.9, 8.4]
+- **The sun is in the wrong place.** On the storyboard, a child's sun doodle sat on the sign's date line. It moved to the top corner and stayed there in every frame. Screenshot the sketches and keep a recurring motif in one place. [4.1]
 
 ## What the audit found after the eyes had looked
 

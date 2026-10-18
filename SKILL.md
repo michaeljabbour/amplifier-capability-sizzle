@@ -17,16 +17,16 @@ You are the director first and the production team second. Sizzle makes a 15 to 
 1. Absorb the source, the brand, the assets and the audience.
 2. Find the idea.
 3. Write the film on paper.
-4. Pass the creative gate.
+4. Pass the creative gate, then the storyboard gate: a person approves the plan.
 5. Generate score, voice and sound.
 6. Build the composition, auditing and looking as you go.
 7. Render and mix.
 8. Watch, review, verify.
 9. Deliver and document, then take notes.
 
-**Hard rule: no generation call (music, voice or sound effects) before step 4 passes.** Generation spends credits and anchors the film: once a score exists, the edit bends to it.
+**Hard rule: no generation call (music, voice, sound effects, images or video) and no render before step 4 passes, and step 4 passes only when a person has approved the storyboard and script.** Generation spends credits and anchors the film: once a score exists, the edit bends to it. A film once passed every technical gate and was still rejected, because its script never said what the product was for. A storyboard shows that in minutes; a render shows it after an hour.
 
-**Decide; don't wait to be directed.** A short ask ("make the event opener from this folder") is enough. Choose the length, shape, voice, music, treatment of people and cut-downs from the defaults below, record each choice and its reason in the brief, and ask only when a choice is expensive to undo and the source cannot settle it (which people to feature from a long list, for example).
+**Decide; don't wait to be directed.** A short ask ("make the event opener from this folder") is enough. Choose the length, shape, voice, music, treatment of people and cut-downs from the defaults below, record each choice and its reason in the brief, and ask only when a choice is expensive to undo and the source cannot settle it (which people to feature from a long list, for example). The story is the exception: the script and storyboard always go to a person before anything is generated.
 
 Defaults when the user doesn't say:
 
@@ -39,8 +39,8 @@ Defaults when the user doesn't say:
 
 **Borrow the client's ears and eyes.** You cannot listen, and you may not be able to see. The client can do both.
 
-- **User present:** at step 4, send the creative package in one short message and keep working: logline, shape, script, motif arc, music direction, and three or four styleframes as images. At step 5, offer the two score finalists and say which one you will use.
-- **User away:** make each call yourself and record it in the README.
+- **User present:** at step 4, share the storyboard (4.1) with two or three questions, and wait for approval or changes. At step 5, offer the two score finalists and say which one you will use.
+- **User away:** make the production calls yourself and record them in the README, but stop at the storyboard gate: send it and wait. Approval is never assumed.
 
 **Where the work runs.** When the user is present, produce in the main conversation, where they can see and redirect the work. Keep fresh agents for the jobs that need fresh eyes: the creative gate, the second critic and the copy check. A fresh agent only has eyes if it can see the images itself (0.1).
 
@@ -66,11 +66,7 @@ Do this in the first minutes, and write the results in a `Harness` section of `B
 - **None available:** finish everything up to the creative package, then ask the user to configure a provider in the environment their shell inherits and restart.
 - **Never ask for a key in chat.** If the user pastes one anyway, use it only from a private file outside the project and delete the file when done. Tell them to rotate the key: it now sits in the session logs and is re-sent with every later request.
 
-**0.3 Tools.**
-
-- **What you need:** headless Chromium through Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper.
-- **How:** check each with one command, install what's missing and note the versions.
-- **What ships with Sizzle:** `tools/` holds the audit hook, the layout lint, the motion audit, and the voice, score and mix checks; `tools/README.md` gives each one's command. Copy what you need into the project's own `tools/` folder.
+**0.3 Tools.** You need headless Chromium through Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper. Check each with one command, install what's missing and note the versions. `tools/` holds the audit hook, the layout lint, the motion audit, and the voice, score and mix checks, and `tools/README.md` gives each one's command. Copy what you need into the project's own `tools/` folder.
 
 **0.4 Fonts.** Use the brand's typeface if its license allows rendering. Otherwise use an open stand-in with matching metrics. Never ship font files with the deliverables.
 
@@ -102,6 +98,7 @@ After any break, read `STATE.md` before touching anything. Never re-run a step f
 
 Write each of these in one or two sentences before anything else. They are the spine; everything later is checked against them.
 
+- **Purpose:** what the product is for and the problem it solves, in plain words, with its core thesis in the source's own terms. Study the repo, site or deck until you can say it to a stranger. A script that never says this fails, however well it is made.
 - **Insight:** a truth about the audience's situation, not about the product. The teaser: senior leaders hear answers all day from vendors, consultants and their own teams, and few get time away to work on their own question.
 - **Proposition:** the one thing the viewer must believe at the end, in one sentence.
 - **Shape:** the change the film puts the viewer through, ideally the client's own promise acted out.
@@ -115,6 +112,8 @@ Write each of these in one or two sentences before anything else. They are the s
 Test: tell the film in one breath. "We open on X, turn on Y, and leave on Z." If it needs "and also", cut.
 
 **From source to film.** A film is not the source's table of contents. Choose the proofs that move this audience and leave the rest in the source. For an analysis or a report, the film is its trailer: the question, the most surprising finding, a reason to open the full thing. Find the human stakes even in technical material.
+
+**Teach first when the product is a way of thinking** (a method, a framework, a skill). The viewer must leave able to use the idea; the product comes last, as the partner that helps. Write for a viewer with no insider knowledge: no jargon, and one everyday object anyone can judge in a second (a yard-sale sign seen from a passing car). Then teach with it: two cases that fail in different ways, shown before either failure is named; one change at a time; a question, a real silent pause, then the answer; a worked example, then the same idea on two or three other things; and a short habit or question the end card keeps on screen. Define each term on screen, shown on the example that lacks it.
 
 **A frame from above.** When leadership has just set a company-wide frame, open on it: the leader's portrait and the phrases, one at a time, held and readable. Then move into the team, for example with a camera dive into one dot of a field that opens as the team's world.
 
@@ -240,21 +239,22 @@ Give each scene one signature move that suits its idea, and never bring two scen
 - slow pushes of 3.5 per cent at most, and a 3.5 per cent punch on big hits that decays over 0.5 s;
 - no spins, flips or shake;
 - at most one full-frame flash, one frame long;
-- eases in and out on every camera move, never a move that starts at full speed.
+- eases in and out on every camera move, never a move that starts at full speed;
+- motion that explains, not motion that decorates: one idea per beat, edits drive the moves, and no kinetic type for its own sake.
 
 ### 3.10 Styleframes
 
-Before writing the whole composition, render the first frame, the turn, the hero line and the end card at full resolution. Judge them as a designer: hierarchy, contrast, brand fidelity, and whether you would pause on them. Fix the look here, where it is cheap.
+Once the storyboard is approved, and before writing the whole composition, render the first frame, the turn, the hero line and the end card at full resolution. Judge them as a designer: hierarchy, contrast, brand fidelity, and whether you would pause on them. Fix the look here, where it is cheap.
 
-## 4. The creative gate
+## 4. The creative gate and the storyboard
 
-Before generating anything, review the package against this rubric.
+Before showing anyone the plan, review it against this rubric.
 
 - **Who reviews:** on a long or unattended run, a fresh agent that has not seen the work. Give it the brief, the claims ledger, `BRIEF.md` and the styleframes as images it can see. If it cannot see them, it must say so in its verdict. When the user is waiting, or there is no agent tool, do a separate pass yourself, reading `BRIEF.md` as a stranger would.
 - **What it returns:** pass or fail with a reason on each point, the weakest beat, and what to cut.
 
 1. The insight is about the audience, not the product.
-2. There is one proposition, in one sentence.
+2. The film says in plain words what the product is for, and there is one proposition, in one sentence.
 3. The film can be told in one breath.
 4. The first frame moves, and a question or a frame is posed within three seconds.
 5. There is a turn, and picture, voice and music all change on it.
@@ -265,11 +265,22 @@ Before generating anything, review the package against this rubric.
 10. Scene lengths vary, with at least one held moment and one burst.
 11. Each scene has a distinct craft move, and nothing reads as a slide.
 12. The music brief names an arc, instrumentation for this subject, and the anti-references.
-13. Type sizes and reading times meet 3.2, and the narrator carries every line that must be read.
+13. Type sizes and reading times meet 3.2, the narrator carries every line that must be read, and a viewer with no insider knowledge can follow every term.
 14. The voice is cast for this audience, and every featured person gets a moment large and long enough to know them.
 15. Supplied graphics are built, not flashed; leaders' paraphrases carry no quote marks; no photo is upscaled.
 
-Fix every failure before step 5. If the user is present, send the package and carry on.
+Fix every failure, then make the storyboard.
+
+### 4.1 The storyboard gate
+
+Within minutes of the brief, show a person the whole film as a storyboard, and generate nothing until they approve it. `references/storyboard.md` gives the full contents and the approval record.
+
+- **Overview card:** purpose, who it is for, what the viewer will understand or be able to do afterwards, the key terms in plain words, how the film teaches or persuades, the full narration, and the open questions.
+- **One card per frame,** grouped by act with timecodes: a quick sketch, title and timecode, the exact voice line, then Picture, Teaches (or Point), Motion and Sound.
+- **Two or three questions** for the reviewer, such as length, the choice of example, and the feel of voice and music.
+- **Where it lives:** the host's own canvas or design board if it has one; otherwise one self-contained HTML page (start from `references/storyboard-template.html`); in a text-only host, a Markdown table per act.
+- **Sketches are schematic,** drawn with HTML and CSS shapes, never generated images. Screenshot them and check that no icon or doodle sits on text, and keep a recurring motif in the same place from frame to frame.
+- **Record the approval** in `BRIEF.md`: who approved, which storyboard version, and the changes asked for. Any later change to the script reopens the gate.
 
 ## 5. Generate score, voice and sound
 
@@ -411,11 +422,7 @@ for (let f = f0; f < f1; f++) { const url = await page.evaluate(t => window.rend
 
 ## 8. Watch, review, verify
 
-**8.1 Watch it as the audience.**
-
-- **Look:** look at a contact sheet every 0.5 s and at every transition frame by frame. Without eyes, read the audit's string timeline as the viewer would.
-- **Write the notes first:** write the notes a demanding client would write before they have to: "flat on [word]", "this drags", "I can't read that", "who is this?". Then act on each.
-- **Cut repeats:** kill what repeats.
+**8.1 Watch it as the audience.** Look at a contact sheet every 0.5 s and at every transition frame by frame; without eyes, read the audit's string timeline as the viewer would. Write the notes a demanding client would write before they have to ("flat on [word]", "this drags", "I can't read that", "who is this?"), act on each, and kill what repeats.
 
 **8.2 Second critic.** Give a fresh agent the stills at 0.5 s, the script and the mix numbers, with the rubric from section 4. Ask what it would cut, what it did not understand, and what the best moment is. It reviews only what it can actually see, and says which frames it saw second-hand.
 
@@ -444,7 +451,7 @@ for (let f = f0; f < f1; f++) { const url = await page.evaluate(t => window.rend
 - **A re-edit that moves everything** (new scenes, a longer score): place every line by a rule in a script, keep the unchanged scenes' code, and compare those scenes at their new offset.
 - **Keep random sequences stable.** On the opener's v6, deleting one unused random call reshuffled the whole finale crowd. Only the PSNR comparison against v5 caught it.
 
-Passing the gates does not make the film good. It is done when the creative gate and both reviews have passed as well.
+Passing the gates does not make the film good: they measure craft, not meaning. It is done when the creative gate, the storyboard gate and both reviews have passed as well.
 
 ## 9. Deliver and document
 
@@ -467,7 +474,10 @@ Diagnose with measurement, fix the cause, and report before and after numbers. T
 
 ## 11. Anti-patterns
 
-- Generating music and voice before the idea exists.
+- Generating music and voice before the idea exists, or before a person has approved the storyboard.
+- A script that never says what the product is for.
+- Insider vocabulary, and a product pitch where the viewer needed a lesson.
+- Motion that decorates instead of explaining.
 - Lifting the source's sentences as the script, or mirroring its sections as scenes.
 - Scenes of equal length, one per hit.
 - Corporate electronica.

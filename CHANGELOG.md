@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Add the storyboard gate (`SKILL.md` 4.1, `references/storyboard.md`): within minutes of the brief, a person sees the whole film as an overview card and one sketched card per frame, with two or three questions, and nothing is generated or rendered until they approve it. It works in any host: a native canvas, a self-contained HTML page (`references/storyboard-template.html`), or Markdown tables. The approval is recorded in `BRIEF.md`, and any later script change reopens it.
+- Add the lessons of a film that passed every technical gate and was still rejected: state the product's purpose in plain words; write for viewers with no insider knowledge, around one everyday example; teach first when the product is a way of thinking, with contrasting cases, a predict-then-reveal pause, transfer and a takeaway; define terms on screen; let motion explain rather than decorate; check storyboard sketches for doodles on text.
+- The skill bundle now carries every file in `references/`, not only Markdown.
+
 ## 0.1.1 (2026-10-16)
 
 - Open the homepage with a 60-second reel made with Sizzle, in the order the skill sets out, and audited with its own tools. It ships with captions, a poster and a 15-second cut, and [docs/REEL.md](docs/REEL.md) tells how it was made and what each check measured.

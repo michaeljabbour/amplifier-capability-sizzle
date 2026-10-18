@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Film storyboard</title>
+<!--
+  Sizzle storyboard template. Copy this file, replace the overview, the acts and the frames,
+  and give the page to the person who approves the film. Sketches are plain HTML and CSS shapes:
+  never generated images, never the film's own renderer. Self-contained: no scripts, no external requests.
+-->
+<style>
+  :root {
+    --paper: #f6f4ee; --card: #fbfaf6; --wash: #e9ede5; --line: #d8d8cc;
+    --ink: #252823; --muted: #64685e; --accent: #486b61; --gold: #80642f;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 var(--sans); }
+  main { max-width: 1240px; margin: 0 auto; padding: 40px 20px 64px; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; margin: 0; }
+  h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; max-width: 22ch; }
+  .kicker { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+
+  /* Overview */
+  .overview { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 28px 0 48px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 20px 22px; }
+  .panel h2 { font-size: 20px; margin-bottom: 10px; }
+  .panel p { margin: 0 0 10px; }
+  .term { border-left: 3px solid var(--accent); padding-left: 12px; margin: 12px 0; }
+  .term b { font-family: var(--serif); font-weight: 400; font-size: 18px; }
+  .narration { margin: 0; padding-left: 20px; font-family: var(--serif); font-style: italic; color: var(--accent); }
+  .narration li { margin-bottom: 6px; }
+  .questions { margin: 0; padding-left: 20px; }
+  .questions li { margin-bottom: 10px; }
+  .questions em { color: var(--muted); font-style: normal; display: block; font-size: 13px; }
+
+  /* Acts and frames */
+  .act { margin-top: 44px; }
+  .act-head { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 20px; }
+  .act-head h2 { font-size: 26px; }
+  .act-head span { color: var(--muted); font-size: 14px; }
+  .frames { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+  .frame { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; }
+  .notes { padding: 14px 18px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .title { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .title h3 { font-size: 19px; }
+  .title time { color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .vo { font-family: var(--serif); font-style: italic; color: var(--accent); margin: 0; }
+  dl { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 6px 12px; margin: 0; font-size: 13px; }
+  dt { color: var(--muted); font-weight: 700; }
+  dd { margin: 0; }
+
+  /* Sketch: a 16:9 stage and a few schematic shapes. Position shapes in per cent so they scale. */
+  .sketch { position: relative; aspect-ratio: 16 / 9; background: var(--paper); border-bottom: 1px solid var(--line); overflow: hidden; }
+  .sketch > * { position: absolute; }
+  .road { left: 0; right: 0; bottom: 0; height: 18%; background: #e3ded1; }
+  .post { left: 48%; width: 1.4%; top: 40%; bottom: 18%; background: #b9b19c; }
+  .car { bottom: 6%; width: 18%; height: 10%; border-radius: 12px 18px 5px 5px; background: var(--accent); }
+  .card { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; text-align: center; padding: 3%; box-shadow: 0 6px 16px rgba(60, 55, 40, .12); }
+  .card.fine { background: var(--card); border: 1px solid var(--line); font-family: var(--serif); font-style: italic; }
+  .card.board { background: #d8c39b; border-radius: 3px; font-weight: 800; letter-spacing: .02em; align-items: flex-start; text-align: left; }
+  .big { font-family: var(--serif); font-size: clamp(18px, 3vw, 30px); line-height: 1.1; }
+  .label { font-size: 11px; color: var(--muted); }
+  .axis-x { left: 8%; right: 30%; bottom: 10%; height: 2px; background: var(--ink); }
+  .axis-y { left: 8%; top: 8%; bottom: 10%; width: 2px; background: var(--ink); }
+  .target { right: 30%; top: 8%; width: 31%; height: 41%; background: #dce7df; }
+  .motif { width: 22px; height: 22px; border-radius: 50%; border: 3px solid #c06a2b; }
+  .placeholder { inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 13px; border: 2px dashed var(--line); margin: 6%; }
+
+  footer { margin-top: 48px; color: var(--muted); font-size: 13px; }
+
+  @media print {
+    body { background: #fff; font-size: 11px; }
+    main { max-width: none; padding: 0; }
+    .act { break-before: page; }
+    .frames { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .frame, .panel { break-inside: avoid; box-shadow: none; }
+    .card { box-shadow: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Storyboard v1 · for approval before anything is generated</p>
+  <h1>Film title: what the viewer will learn in one line</h1>
+
+  <section class="overview" aria-label="Overview">
+    <div class="panel">
+      <h2>Purpose</h2>
+      <p><b>What the product is for:</b> the problem it solves, in plain words.</p>
+      <p><b>Who it is for:</b> the audience, where they watch, what they already know.</p>
+      <p><b>Afterwards the viewer can:</b> the one thing they will understand or be able to do.</p>
+      <div class="term"><b>Term one</b><br>Its question in plain words, then three everyday words that describe it.</div>
+      <div class="term"><b>Term two</b><br>Its question in plain words, then three everyday words that describe it.</div>
+    </div>
+    <div class="panel">
+      <h2>How it teaches</h2>
+      <p>One everyday example anyone can judge in a second. Two cases that fail in different ways, seen before they are named. One change at a time. A question, a silent pause, then the answer. A worked example, then the same idea on other things. A takeaway that stays on the last card. The product comes last.</p>
+      <h2>Narration</h2>
+      <ol class="narration">
+        <li>Line one, exactly as it will be spoken.</li>
+        <li>Line two.</li>
+        <li>Line three.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h2>Questions for you</h2>
+      <ol class="questions">
+        <li>Length: 60 s with a 15 s cut, or 45 s? <em>Recommended: 60 s, so the pause can breathe.</em></li>
+        <li>Is the example right for this audience? <em>Alternative: a menu or an invitation.</em></li>
+        <li>Voice and music: calm and warm, or brighter? <em>Recommended: calm narrator, light piano and pizzicato.</em></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="act" aria-labelledby="act1">
+    <div class="act-head"><h2 id="act1">Act 1 · See it, name it</h2><span>0:00 to 0:15</span></div>
+    <div class="frames">
+
+      <article class="frame">
+        <div class="sketch" aria-hidden="true">
+          <div class="road"></div><div class="post"></div>
+          <div class="card fine" style="left: 30%; top: 12%; width: 40%; height: 34%"><span>A Curated Collection<br>of Pre-Loved Objects</span></div>
+          <div class="car" style="left: 72%"></div>
+        </div>
+        <div class="notes">
+          <div class="title"><h3>1 · Beautiful. Nobody stops.</h3><time>0:00 to 0:05</time></div>
+          <p class="vo">“This sign is beautiful. Nobody stops.”</p>
+          <dl>
+            <dt>Picture</dt><dd>A polished sign on a fence post; a car passes without slowing.</dd>
+            <dt>Teaches</dt><dd>Nothing named yet: polish was not enough.</dd>
+            <dt>Motion</dt><dd>Slow push on the sign; the car passes on “Nobody stops.”</dd>
+            <dt>Sound</dt><dd>Quiet piano, one passing car.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="sketch" aria-hidden="true">
+          <div class="road"></div><div class="post"></div>
+          <div class="card board" style="left: 30%; top: 12%; width: 40%; height: 34%"><span>YARD SALE!!!</span><span class="label" style="color: var(--ink)">sat 9-2 lamps books bikes tools dishes rugs games</span></div>
+          <div class="motif" style="left: 64%; top: 15%"></div>
+          <div class="car" style="left: 72%"></div>
+        </div>
+        <div class="notes">
+          <div class="title"><h3>2 · Right words. Nobody can read it.</h3><time>0:05 to 0:10</time></div>
+          <p class="vo">“This one says the right thing. Nobody can read it.”</p>
+          <dl>
+            <dt>Picture</dt><dd>Same fence, same car, a crowded cardboard sign. The motif sits in the top corner, clear of the text.</dd>
+            <dt>Teaches</dt><dd>The opposite failure. Frames 1 and 2 are contrasting cases.</dd>
+            <dt>Motion</dt><dd>The camera tries to read the list and blurs as the car passes.</dd>
+            <dt>Sound</dt><dd>Same piano, same car: only the sign changed.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="sketch" aria-hidden="true">
+          <div class="placeholder">Sketch: what is on screen, and where</div>
+        </div>
+        <div class="notes">
+          <div class="title"><h3>3 · Frame title</h3><time>0:10 to 0:15</time></div>
+          <p class="vo">“The exact voice line.”</p>
+          <dl>
+            <dt>Picture</dt><dd>What is on screen.</dd>
+            <dt>Teaches</dt><dd>What the viewer knows or feels now that they did not before.</dd>
+            <dt>Motion</dt><dd>What moves, and how it helps the viewer understand.</dd>
+            <dt>Sound</dt><dd>Music section, effects, silence.</dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="act" aria-labelledby="act2">
+    <div class="act-head"><h2 id="act2">Act 2 · Place it, move it</h2><span>0:15 to 0:30</span></div>
+    <div class="frames">
+
+      <article class="frame">
+        <div class="sketch" aria-hidden="true">
+          <div class="axis-y"></div><div class="axis-x"></div><div class="target"></div>
+          <div class="card fine" style="left: 12%; top: 14%; width: 22%; height: 22%"><span class="label">polished sign</span></div>
+          <div class="card board" style="left: 40%; top: 58%; width: 22%; height: 22%"><span class="label" style="color: var(--ink)">cardboard sign</span></div>
+          <div class="big" style="left: 47%; top: 18%; color: var(--accent)">?</div>
+          <div class="big" style="left: 74%; top: 30%; width: 24%; font-size: clamp(14px, 2vw, 20px)">Which way should each one move?</div>
+        </div>
+        <div class="notes">
+          <div class="title"><h3>4 · Put them on a map</h3><time>0:15 to 0:21</time></div>
+          <p class="vo">“Put them on a map. Which way should each one move?”</p>
+          <dl>
+            <dt>Picture</dt><dd>Two axes; each sign in its corner; the goal corner waits empty.</dd>
+            <dt>Teaches</dt><dd>Where you are tells you which way to go. Two seconds of silence so the viewer answers first.</dd>
+            <dt>Motion</dt><dd>The signs drop into place, then everything holds still.</dd>
+            <dt>Sound</dt><dd>Music thins to one held note.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <article class="frame">
+        <div class="sketch" aria-hidden="true">
+          <div class="placeholder">Sketch: what is on screen, and where</div>
+        </div>
+        <div class="notes">
+          <div class="title"><h3>5 · Frame title</h3><time>0:21 to 0:30</time></div>
+          <p class="vo">“The exact voice line.”</p>
+          <dl>
+            <dt>Picture</dt><dd>What is on screen.</dd>
+            <dt>Teaches</dt><dd>What the viewer knows or feels now that they did not before.</dd>
+            <dt>Motion</dt><dd>What moves, and how it helps the viewer understand.</dd>
+            <dt>Sound</dt><dd>Music section, effects, silence.</dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer>Reply with frame numbers and changes, or approve as drawn. Nothing is voiced, scored or rendered until this storyboard is approved.</footer>
+</main>
+</body>
+</html>

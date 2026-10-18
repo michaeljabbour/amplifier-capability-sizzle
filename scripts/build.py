@@ -35,7 +35,7 @@ def table_rows(block):
 def skill_files():
     """Everything the skill needs beside SKILL.md: the references and the tools."""
     files = ['SKILL.md']
-    files += [str(p.relative_to(ROOT)) for p in sorted((ROOT / 'references').glob('*.md'))]
+    files += [str(p.relative_to(ROOT)) for p in sorted((ROOT / 'references').iterdir()) if p.is_file() and not p.name.startswith('.')]
     files += [str(p.relative_to(ROOT)) for p in sorted((ROOT / 'tools').iterdir()) if p.is_file() and not p.name.startswith('.')]
     return files
 

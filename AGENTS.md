@@ -1,6 +1,6 @@
 # Working on Sizzle
 
-- Read `SKILL.md`, `references/lessons.md` and `tools/README.md` before changing the skill. Keep the skill's order and its hard rule: no generation call before the creative gate passes.
+- Read `SKILL.md`, `references/lessons.md` and `tools/README.md` before changing the skill. Keep the skill's order and its hard rule: no generation call or render before the creative gate passes and a person has approved the storyboard.
 - Keep the `SKILL.md` body under 500 lines and portable: no host-specific syntax, and every `tools/` or `references/` path it names must exist. History and evidence go in `references/`, not in the skill.
 - The site reads the creative gate and the technical gates from `SKILL.md`, and the tool and provider tables from `tools/README.md`, at build time. Change them there, never in the site's content.
 - Tools stay small and copyable one by one. `tts.py` uses only the standard library. Keys come only from environment variables, are never printed or logged, and a paid request is never retried automatically.
