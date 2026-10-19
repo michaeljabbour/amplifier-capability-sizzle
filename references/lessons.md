@@ -36,6 +36,13 @@ The first cut passed every technical gate: every word recognized, the layout lin
 - **The animation carried more than the meaning.** Motion now has to explain: one idea per beat, edits drive the moves, no kinetic type for its own sake. The gates measure craft, not meaning. [3.9, 8.4]
 - **The sun is in the wrong place.** On the storyboard, a child's sun doodle sat on the sign's date line. It moved to the top corner and stayed there in every frame. Screenshot the sketches and keep a recurring motif in one place. [4.1]
 
+## From the agency teaser
+
+A 60 s teaser on the author's own research into human agency. It passed the creative gate, the cold read found both ahas at their declared times, and every claim traced to the papers.
+
+- **Just jumping into this video, I'd be confused.** Four simulated first-time viewers (a student, a second-language reader with the sound off, a busy nurse, a retired teacher who does not use feed apps) rated their understanding 2, 2, 3 and 2 out of 5. Most were lost at the same places: a research reversal said in abstract words, a term ("the strongest lever") never shown, the jump from a 1967 study to a phone feed never explained, and key lines that existed only in the voice. Every earlier reviewer had read the brief and judged understanding in passing. Now a first-time panel is a gate at the storyboard and again on the render, every idea the story needs is shown as well as said, and real people outside the field say the storyboard back before generation. [3.2, 4, 4.1, 8.2]
+- **Calibrating the panel.** Over four rounds of rework the ratings rose to 3, 3, 4 and 3.5, and every viewer retold the proposition, explained the motif and read the hero line correctly. Yet all four still listed the motif's opening as "lost" every round, because it is shown before it is explained. Asked to list where they got lost, simulated viewers always find something. A moment now counts as lost only when the confusion lasts into the retell and the answers. [4]
+
 ## What the audit found after the eyes had looked
 
 On the opener's v5, after five rounds of looking, the layout audit still found a person icon crossing the title, two phrases overlapping at a handover, and a four-word hint card on screen for 0.9 s. On v6, teaching the audit about masks, clips and covers took it from 49 false issues to none, so the real ones stood out. [6.4]

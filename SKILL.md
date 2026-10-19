@@ -163,6 +163,7 @@ One row per beat with these columns: time, music (section and hit), picture (the
 - **Reading time.** Every string stays fully visible and still for at least 0.3 s per word plus 0.5 s. A line the narrator says stays up for as long as she says it, plus 0.3 s.
 - **Lists and agendas.** This is the classic failure: six cards arriving in 2.5 s with no voice cannot be read. Give each item its own moment and say it, or cut items.
 - **The narrator carries what matters on screen.** If a line must be read, she says it, or it gets a held moment of its own.
+- **Show it as well as say it.** Anything the viewer needs to follow the story is on screen as words or picture, not only in the voice, so the film works with the sound off. Every idea the film relies on is shown happening at least once (what was done, to whom, and what changed), not only named; a term the audience does not already use is shown before it is named, or cut.
 - **Cut-downs:** plan them now. A 15 s cut keeps one whole pair from the master, a plant and its flip, usually the pair that lands the proposition, with aha 1's setup folded into one line or frame so the flip still has something to turn. Never keep a flip without its plant, its breath and its settle. Name the master ranges, which aha each carries, which beats carry the hook, the offer and the brand, and whether the platform needs a square or vertical version.
 
 ### 3.3 The motif and its arc
@@ -247,6 +248,7 @@ Before showing anyone the plan, review it against this rubric.
 
 - **Who reviews:** on a long or unattended run, a fresh agent that has not seen the work. Give it the brief, the claims ledger and `BRIEF.md`; styleframes come after approval (3.10), so the gate judges the film on paper. When the user is waiting, or there is no agent tool, do a separate pass yourself, reading `BRIEF.md` as a stranger would, and mark the cold read not run; the person's cover-the-flip test at the storyboard gate stands in for it.
 - **What it returns:** pass or fail with a reason on each point, naming any clause that fails, the weakest beat, and what to cut.
+- **First-time panel:** give at least four fresh reviewers the same plain description as the cold read, each playing a different first-time viewer: one with no background in the subject; one reading in a second language with the sound off (the voice is unheard unless its words are on screen); one busy and barely interested; one who does not use the technology or setting the film shows. Each watches once at real speed, then, without rereading, retells the film in two sentences, names its main point, what it asks them to do and what the hero line means, lists where they got lost, and rates their understanding from 1 to 5. It passes when at least three of four retell the proposition, nobody rates it below 3, and no moment loses two or more of them. A moment is lost when the confusion lasts: the retell or the answers are wrong or missing on that point. A puzzle the film resolves a few seconds later is a setup; note it, but it does not fail the panel. Simulated viewers are a screen, not people: the storyboard also goes to real people outside the field (4.1).
 - **Cold read:** first give the reviewer only time, picture, voice and on-screen words, in plain description: no role, job, motif-state or sound columns, no named ahas, and no wording that marks a callback, a pause or a change of state ("returns", "along the path it left", "nothing moves"), since each of those tells a stranger where to look. Give times per beat, not per event, for the same reason. It names the moments where a viewer's belief changes, and what changed. If they are not the declared flips, within 2 s, the ahas are not on the page: change the film, not the labels. A cold read shows structure, not felt effect; the person at the storyboard gate judges that.
 
 1. The insight is about the audience, not the product.
@@ -261,7 +263,7 @@ Before showing anyone the plan, review it against this rubric.
 10. The script reads aloud in time, with a third of the film free of voice; it is written for the ear, with emphasis as punctuation; every claim traces to the ledger.
 11. Scene lengths vary, with at least one held moment and one burst; each scene has a distinct craft move, and nothing reads as a slide.
 12. The music brief names an arc, a breath and a hit for each flip, instrumentation for this subject, and the anti-references.
-13. Type sizes and reading times meet 3.2, the narrator carries every line that must be read, and a viewer with no insider knowledge can follow every term.
+13. Type sizes and reading times meet 3.2, the narrator carries every line that must be read, every idea the story needs is shown as well as said, and the first-time panel passes.
 14. The voice is cast for this audience, and every featured person gets a moment large and long enough to know them.
 15. Supplied graphics are built, not flashed; leaders' paraphrases carry no quote marks; no photo is upscaled.
 
@@ -273,7 +275,7 @@ Within minutes of the brief, show a person the whole film as a storyboard, and g
 
 - **Overview card:** purpose, who it is for, what the viewer will understand or be able to do afterwards, the key terms in plain words, how the film teaches or persuades, the two ahas on a clock strip (time, belief before and after, the flip, the plant), the full narration, and the open questions.
 - **One card per frame,** grouped by act with timecodes: a quick sketch, title and timecode, the exact voice line, then Role, Picture, Teaches (or Point), Motion and Sound. A flip's card shows before and after.
-- **Two or three questions** for the reviewer, such as length, the choice of example, and the feel of voice and music.
+- **Two or three questions** for the reviewer, such as length, the choice of example, and the feel of voice and music. Ask too for one or two people outside the field, who have not seen the brief, to say back in two sentences what the film says; if they cannot, the story changes before anything is generated.
 - **Where it lives:** the host's own canvas or design board if it has one; otherwise one self-contained HTML page (start from `references/storyboard-template.html`); in a text-only host, a Markdown table per act.
 - **Sketches are schematic,** drawn with HTML and CSS shapes, never generated images. Screenshot them and check that no icon or doodle sits on text, and keep a recurring motif in the same place from frame to frame.
 - **Record the approval** in `BRIEF.md`: who approved, the approving message quoted word for word, which storyboard version, the ahas approved, and the changes asked for. With no approving message to quote (or, where the host approves with a button, its recorded approval), the gate has not passed. Any later change to the script reopens it.
@@ -310,7 +312,7 @@ Within minutes of the brief, show a person the whole film as a storyboard, and g
   - pYIN also misses breathy and creaky voice. Confirm on a spectrogram with the pitch track and the word marks drawn on it: harmonics mean voiced; formants over noise mean breath. Look at it if you have eyes.
   - a bass voice's falls dip under pYIN's 60 Hz floor and read as unvoiced: measure it with `--fmin 40`, and judge short words like "Stop." on the spectrogram, since the longer frame blurs them.
   - a statement's final fall should be at least 2 semitones.
-- **Each emphasis word** needs a pause of at least 0.3 s before it, a peak at least 3 semitones over the line median, and a level at or above the rest of the line.
+- **Each emphasis word** needs a pause of at least 0.3 s before it, measured on the audio's energy rather than on Whisper's word edges, which stretch across silence (a line's first word counts its lead-in), a peak at least 3 semitones over the line median, and a level at or above the rest of the line.
 - **Fixing a failing word:** re-voice that line alone, with its neighbors as context and plain punctuation.
 - **The same failure in every take is the text, not luck.** Four takes of one script fail at the same place. Rewrite the line (punctuation, word order, which word ends it) instead of buying more takes.
 
@@ -407,7 +409,7 @@ for (let f = f0; f < f1; f++) { const url = await page.evaluate(t => window.rend
 
 **8.1 Watch it as the audience.** Look at a contact sheet every 0.5 s and at every transition frame by frame; without eyes, read the audit's string timeline as the viewer would. Write the notes a demanding client would write before they have to ("flat on [word]", "this drags", "I can't read that", "who is this?"), act on each, and kill what repeats. Then check the aha clock against `edit.json` and the stems: measure the voice and score level around each flip (an `ffmpeg` `astats` or `silencedetect` window works) and paste that output in `verification.txt`, with each flip's time.
 
-**8.2 Second critic.** Give a fresh agent the stills at 0.5 s, the script and the mix numbers, with the rubric from section 4. Ask what it would cut, what it did not understand, and where its belief changed: the moments of realization, and what it believed before each. If they differ from the brief's ahas, the film is not doing what the brief says. It reviews only what it can actually see, and says which frames it saw second-hand.
+**8.2 Second critic.** Give a fresh agent the stills at 0.5 s, the script and the mix numbers, with the rubric from section 4. Run the first-time panel (4) again on the rendered frames and captions, with the same pass bar. Ask what it would cut, what it did not understand, and where its belief changed: the moments of realization, and what it believed before each. If they differ from the brief's ahas, the film is not doing what the brief says. It reviews only what it can actually see, and says which frames it saw second-hand.
 
 **8.3 Motion audit.**
 
@@ -460,7 +462,7 @@ Diagnose with measurement, fix the cause, and report before and after numbers. T
 
 - Generating music and voice before the idea exists, or before a person has approved the storyboard.
 - A script that never says what the product is for.
-- Insider vocabulary, and a product pitch where the viewer needed a lesson.
+- Insider vocabulary, an idea said but never shown, and a product pitch where the viewer needed a lesson.
 - Motion that decorates instead of explaining.
 - Lifting the source's sentences as the script, or mirroring its sections as scenes.
 - Scenes of equal length, one per hit.

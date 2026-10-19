@@ -32,7 +32,7 @@ Aim to show the storyboard within minutes of the brief. Draw the sketches with p
 - Motion: what moves and why. Every move should help the viewer understand.
 - Sound: music section, effects, silence.
 
-**Two or three questions** for the reviewer, each one a real choice: the length (a 60 s lesson and a 15 s cut, or 45 s), the example, the feel of voice and music. Recommend an answer for each. Add one test: "Cover the flip frames and say what you expect next." A correct guess means the flip confirms rather than surprises.
+**Two or three questions** for the reviewer, each one a real choice: the length (a 60 s lesson and a 15 s cut, or 45 s), the example, the feel of voice and music. Recommend an answer for each. Ask the reviewer to show the storyboard to one or two people outside the field, who have not seen the brief, and have them say back in two sentences what the film says; record what they said. Add one test: "Cover the flip frames and say what you expect next." A correct guess means the flip confirms rather than surprises.
 
 ## Where it lives
 

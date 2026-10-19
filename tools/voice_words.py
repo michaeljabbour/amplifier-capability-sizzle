@@ -10,8 +10,11 @@ about 35 per cent voiced frames is a whisper. A bass voice whose falls dip under
 there: pass --fmin 40, whose longer frame blurs short words (judge those on the spectrogram). pYIN also misses breathy and creaky voice, so --spectrogram
 draws each take with its pitch track and word marks: harmonics mean voiced, formants over noise mean breath.
 Whisper drifts by up to 0.2 s on short words, so the energy islands are listed too, for onsets.
---emphasis checks each named word: a pause of 0.3 s or more before it, a peak 3 semitones or more over the
-take's median, and a level at or above the rest of the line. Exit code 1 when an emphasis check fails.
+--emphasis checks each named word: a pause of 0.3 s or more before it (measured on the energy islands, since
+Whisper's word edges stretch across silence; a line's first word counts its lead-in), a peak 3 semitones or more over the
+take's median, and a level at or above the rest of the line. A word that Whisper stretches across a silence
+prints LISTEN: the pause cannot be measured, so judge it by ear. Exit code 1 when an emphasis check fails or
+needs a listen.
 Needs numpy, librosa and faster-whisper; matplotlib for --spectrogram.
 """
 import argparse
@@ -56,6 +59,29 @@ def islands(db, vprob, sr, hop, floor=30.0, gap=0.035, shortest=0.03):
             for i, j in segs if (j - i) * hop / sr >= shortest]
 
 
+def pause_before(a, b, isl, snap=0.15):
+    """Silence before a word Whisper places at a..b, measured on the energy islands, not on Whisper's edges.
+
+    Whisper stretches words across silence and drifts by up to 0.2 s. The word's onset is the island it
+    starts in (when it starts within `snap` s of that island's start) or the next island (when Whisper starts
+    it in the silence before, or in the last 0.05 s of the speech before). A word that starts later inside an
+    island runs on from the speech before it: no pause. A line's first word counts its lead-in. A quiet,
+    unvoiced island (a breath) is part of the pause, not speech. When the word spans a silence of 0.3 s or
+    more, Whisper cannot say which side it lies on: returns None, and the pause must be judged by ear."""
+    top = max((q[2] for q in isl), default=0.0)
+    isl = [q for q in isl if q[3] >= 0.1 or q[2] >= top - 10]
+    for k in range(len(isl) - 1):
+        if isl[k + 1][0] - isl[k][1] >= 0.3 and a < isl[k][1] - 0.05 and b > isl[k + 1][0] + 0.05 and a > isl[k][0] + snap:
+            return None
+    for k, (s0, e0, _, _) in enumerate(isl):
+        if e0 <= a + 0.05:
+            continue
+        if s0 < a - snap:
+            return 0.0
+        return s0 - (isl[k - 1][1] if k else 0.0)
+    return 0.0
+
+
 def measure(path, model, prompt, emphasis):
     import librosa
     y, _ = librosa.load(path, sr=SR, mono=True)
@@ -81,19 +107,22 @@ def measure(path, model, prompt, emphasis):
                      'st': round(float(12 * np.log2(np.median(fz) / med)), 1) if len(fz) else None,
                      'peak_st': round(float(12 * np.log2(np.percentile(fz, 90) / med)), 1) if len(fz) else None})
     fall = rows[-1]['st'] if rows else None   # the last word's pitch against the take's median: a statement falls 2 st or more
+    isl = islands(db, vprob, SR, HOP)
     checks = []
     for target in emphasis:
         for i, r in enumerate(rows):
             if not norm(r['w']).startswith(target):
                 continue
-            pause = r['a'] - rows[i - 1]['b'] if i else r['a']
+            pause = pause_before(r['a'], r['b'], isl)
             others = [q['db'] for j, q in enumerate(rows) if j != i]
             level_ok = not others or r['db'] >= float(np.median(others))
-            ok = pause >= 0.3 and (r['peak_st'] or -99) >= 3 and level_ok
-            checks.append({'word': r['w'], 'at': r['a'], 'pause': round(pause, 2), 'peak_st': r['peak_st'], 'db': r['db'],
-                           'line_db': round(float(np.median(others)), 1) if others else None, 'voiced': r['voiced'], 'ok': bool(ok and r['voiced'] >= 0.35)})
+            rest = (r['peak_st'] or -99) >= 3 and level_ok and r['voiced'] >= 0.35
+            ok = rest and pause is not None and pause >= 0.3
+            checks.append({'word': r['w'], 'at': r['a'], 'pause': None if pause is None else round(pause, 2), 'peak_st': r['peak_st'], 'db': r['db'],
+                           'line_db': round(float(np.median(others)), 1) if others else None, 'voiced': r['voiced'], 'ok': bool(ok),
+                           'listen': bool(rest and pause is None)})
     return {'dur': round(len(y) / SR, 3), 'f0_median': round(med, 1), 'final_fall_st': fall, 'words': rows,
-            'islands': islands(db, vprob, SR, HOP), 'emphasis': checks}
+            'islands': isl, 'emphasis': checks}
 
 
 def spectrogram(paths, results, out, start, end):
@@ -152,7 +181,9 @@ def main():
             print(f"   {w['w'][:13]:<14}{w['a']:7.2f}{w['b']:7.2f}{w['db']:8.1f}{w['voiced']:8.2f}{st:>7}{flag}")
         for c in r['emphasis']:
             failed |= not c['ok']
-            print(f"   EMPHASIS {c['word']!r} at {c['at']:.2f}: pause {c['pause']:.2f} s, peak {c['peak_st']} st, level {c['db']} vs line {c['line_db']} dB, voiced {c['voiced']:.2f}  {'ok' if c['ok'] else 'FAIL'}")
+            pause = 'unclear (the word spans a silence)' if c['pause'] is None else f"{c['pause']:.2f} s"
+            verdict = 'ok' if c['ok'] else 'LISTEN' if c['listen'] else 'FAIL'
+            print(f"   EMPHASIS {c['word']!r} at {c['at']:.2f}: pause {pause}, peak {c['peak_st']} st, level {c['db']} vs line {c['line_db']} dB, voiced {c['voiced']:.2f}  {verdict}")
         print('   islands: ' + '  '.join(f'{a:.2f}-{b:.2f}({p},v{v})' for a, b, p, v in r['islands']))
     if args.json:
         with open(args.json, 'w') as fh:
