@@ -18,6 +18,7 @@ The skill decides rather than waiting to be directed, and records each choice wi
 - **Proposition:** the library is that place on Friday nights.
 - **Shape:** a question in the dark, answered by a lit window.
 - **Turn:** on "library", the waiting dot of light opens into the window.
+- **Aha:** one, because the film is 14 seconds (3.2). Before: after nine there is nowhere to go. After: there is, and it was the lit window the whole time. It flips on "library" at 3.0 s, planted by the waiting light in the first frame, after the question holds in silence. In the viewer's words: "Oh, the library is still open." The hours that follow are proof, not a second turn.
 - **Hero line:** "Fridays, open until midnight."
 - **Ending:** the window closes back into a dot, and the hero line rises to meet it as its full stop, with the library's name under it.
 
@@ -25,20 +26,21 @@ In one breath: we open on a question in the dark, turn when the light becomes a 
 
 ## Beat sheet
 
-| Time | Picture | On screen | Motif | Job |
-| --- | --- | --- | --- | --- |
-| 0.0 to 2.9 s | Night field, one small light | "Where do you go after nine?" | Waiting | Pose the question within three seconds |
-| 3.0 to 6.0 s | The light opens into a window | "The library stays open." | The answer | The turn |
-| 6.0 to 11.1 s | Inside the window, one moment each | "Study rooms." "Late coffee." "Quiet." | The room | What is there, each read in its own moment |
-| 11.1 to 14.0 s | The window closes into the full stop | "Fridays, open until midnight" and "Anytown Library" | The statement | The hours, then the name |
+| Time | Picture | On screen | Motif | Role | Job |
+| --- | --- | --- | --- | --- | --- |
+| 0.0 to 2.9 s | Night field, one small light | "Where do you go after nine?" | Waiting | Pose, plant | Pose the question within three seconds |
+| 3.0 to 6.0 s | The light opens into a window | "The library stays open." | The answer | Flip, settle | The turn, held three seconds |
+| 6.0 to 11.1 s | Inside the window, one moment each | "Study rooms." "Late coffee." "Quiet." | The room | Proof | What is there, each read in its own moment |
+| 11.1 to 14.0 s | The window closes into the full stop | "Fridays, open until midnight" and "Anytown Library" | The statement | Button | The hours, then the name |
 
 The list is the classic risk: three items arriving at once with no voice cannot be read. Each gets its own moment instead, at 72 px, held at least 0.3 s a word plus 0.5 s.
 
 ## The creative gate
 
-A separate pass reads the brief as a stranger would. Most points pass. Two need a word:
+A separate pass reads the brief as a stranger would. Most points pass. A few need a word:
 
 - **Point 4 (the first frame moves, and a question is posed within three seconds):** pass, as long as the question is held long enough to read. The first cut fails it in practice; see below.
+- **Points 5 and 6 (the aha, its plant):** pass. One aha, as a 14-second film should have, named with its time, its before and after, and the light as its plant. Cold read: not run, since no fresh reviewer read it.
 - **Point 13 (type sizes and reading times):** pass on paper. The audit has to confirm it on the frames.
 - **Weakest beat:** the list. Cut it to three items, never more.
 

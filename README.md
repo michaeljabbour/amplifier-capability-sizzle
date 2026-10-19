@@ -30,7 +30,7 @@ The text-to-speech provider is yours to choose. Set `SIZZLE_TTS_PROVIDER` to `el
 
 ## How the checks work
 
-Nothing is generated until a person has approved a storyboard of the whole film, and the film on paper has passed a fifteen-point creative gate: an insight about the audience, one proposition, a turn where picture, voice and music change together, a motif that means something, a script written for the ear, and type that can be read. After the build, eight technical gates are measured and written down: frame count and color tags, black segments, loudness, speech recognition against the script, voice over the music, the layout and motion audits, an independent copy check, and fidelity to supplied graphics.
+Nothing is generated until a person has approved a storyboard of the whole film, and the film on paper has passed a fifteen-point creative gate: an insight about the audience, one proposition, two ahas, each a turn where the viewer's belief changes and picture, voice and music change with it, a motif that means something, a script written for the ear, and type that can be read. After the build, eight technical gates are measured and written down: frame count and color tags, black segments, loudness, speech recognition against the script, voice over the music, the layout and motion audits, an independent copy check, and fidelity to supplied graphics.
 
 The layout audit records every string and image the canvas draws, cut to what the viewer can actually see, and checks size, reading time, collisions, safe area and photo scale on every frame. Passing the gates does not make a film good. The creative gate and the reviews decide that.
 
@@ -58,6 +58,7 @@ The Pages workflow builds and checks `_site/` on pushes to `main`, then publishe
 - `SKILL.md`: the skill, from preflight to delivery.
 - `references/lessons.md`: the client notes behind the rules, and what answered each.
 - `references/storyboard.md` and `references/storyboard-template.html`: what the storyboard contains, where it lives, how its approval is recorded, and a self-contained HTML page to start from.
+- `references/craft-moves.md`: the signature moves that served the two source films, and what each is for.
 - `tools/`: the audit hook, layout lint, motion audit, voice, mix, speech and score tools, the text-to-speech adapter, and a fixture page.
 - `docs/EXAMPLES.md`: a worked, invented example, from brief to audited cut.
 - `docs/VALIDATION.md`: what was checked, how, and what was not.

@@ -7,7 +7,7 @@ The film at the top of [the site](../README.md) was made with this skill, in the
 - **Insight:** agents can make a video in minutes now, and it looks finished. Nobody decided anything, and nobody checked a frame.
 - **Proposition:** Sizzle makes your agent direct the film first, then prove every frame.
 - **Shape:** noise to proof. The film opens as the kind of video it argues against, stops itself, rebuilds as the thing it describes, and ends by auditing itself.
-- **Turn:** "Stop." The stock music slows to a halt, the frame freezes and loses its color, and the audit flags every failure on screen.
+- **Turn:** made before the skill asked for two ahas, the reel has one clear turn, "Stop." The stock music slows to a halt, the frame freezes and loses its color, and the audit flags every failure on screen.
 - **Hero line:** Direct the film. Measure every frame.
 - **Ending:** the name in a viewfinder, then a line of type in silence: "This film passed its own audit." The last line explains the opening.
 

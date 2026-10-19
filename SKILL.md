@@ -1,13 +1,18 @@
 ---
 name: "sizzle"
-description: "Direct and produce a sizzle reel or short kinetic brand film (15 to 90 s) with voice, score and cut-downs, from an outline, deck, site, template or photos, in any agent harness."
+description: "Direct and produce a 15 to 90 s kinetic-typography brand film (sizzle reel, teaser, launch film or event opener) with narration, score and cut-downs, from an outline, deck, site, template or photos. Use when asked for a sizzle, a teaser, a brand or launch video, or an event opener. Stops for a person to approve the storyboard before generating anything."
+license: "MIT"
+compatibility: "Needs Node.js with Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper for the build and the checks. Voice needs a text-to-speech provider key or a local engine."
+user-invocable: true
+metadata:
+  version: "0.1.1"
 ---
 
 # Sizzle
 
 You are the director first and the production team second. Sizzle makes a 15 to 90 second motion-graphics film in which type, one visual motif, a narrator and a score move on one timeline. The picture is drawn on an HTML canvas and rendered frame by frame, so picture and sound stay locked and every frame can be measured.
 
-**The bar.** A film the room wants to watch twice and the client forwards without being asked. It comes from decisions made before any asset exists: an insight about the audience, a shape that acts out the client's own promise, a turn on one word, a motif whose states carry the story, lines written for the ear, a score briefed as emotion, and one signature craft move per scene. Two films set this bar: a 60 s teaser for an executive education program (the teaser, below) and a company's internal event opener (the opener: six versions, 47 to 66 s, made twice in two harnesses). Their lessons are folded in below.
+**The bar.** A film the room wants to watch twice and the client forwards without being asked. It comes from decisions made before any asset exists: an insight about the audience, a shape that acts out the client's own promise, two ahas that each change what the viewer believes and each turn on one word, a motif whose states carry the story, lines written for the ear, a score briefed as emotion, and one signature craft move per scene. Two films set this bar: a 60 s teaser for an executive education program (the teaser, below) and a company's internal event opener (the opener: six versions, 47 to 66 s, made twice in two harnesses). Their lessons are folded in below.
 
 **Built to run anywhere.** Harnesses differ. Some agents can see images and some cannot; some have a voice connector, some an API key and some only a local engine; some carry a huge standing context. The film must not depend on luck with any of these. So Sizzle starts with a preflight, keeps its state in files, and turns every quality bar into something you can measure on the rendered frames and the mix, as well as something you look at.
 
@@ -66,7 +71,7 @@ Do this in the first minutes, and write the results in a `Harness` section of `B
 - **None available:** finish everything up to the creative package, then ask the user to configure a provider in the environment their shell inherits and restart.
 - **Never ask for a key in chat.** If the user pastes one anyway, use it only from a private file outside the project and delete the file when done. Tell them to rotate the key: it now sits in the session logs and is re-sent with every later request.
 
-**0.3 Tools.** You need headless Chromium through Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper. Check each with one command, install what's missing and note the versions. `tools/` holds the audit hook, the layout lint, the motion audit, and the voice, score and mix checks, and `tools/README.md` gives each one's command. Copy what you need into the project's own `tools/` folder.
+**0.3 Tools.** You need headless Chromium through Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper. Check each with one command, install what's missing and note the versions. `tools/` holds the audit hook, the layout lint, the motion audit, and the voice, score and mix checks, and `tools/README.md` gives each one's command. `tools/` and `references/` sit beside this file, in the skill folder, not in the project you are working in; a host that loads skills may report that folder's path (Amplifier returns it as `skill_directory`). Run each tool by its path in the skill folder, or copy what you need into the project's own `tools/` folder once and run those copies. Install packages into the project, never into the skill folder; `tools/lint.mjs` and `tools/motion.mjs` look for Playwright beside themselves, so when you run them from the skill folder, set `PLAYWRIGHT_MODULE` to the project's `node_modules/playwright`.
 
 **0.4 Fonts.** Use the brand's typeface if its license allows rendering. Otherwise use an open stand-in with matching metrics. Never ship font files with the deliverables.
 
@@ -105,11 +110,11 @@ Write each of these in one or two sentences before anything else. They are the s
   - The teaser's program promised leaders a new way to see their own question, so the film runs from noise in to a clear view out.
   - The opener: the company's frame, then into the team, then many people becoming one ring.
   - Other common shapes: question to answer, before to after, scattered to assembled, close-up to the big picture.
-- **Turn:** the moment the film changes direction, usually where the viewer becomes the subject. Design it first; picture, voice and music all change on it.
-- **Hero line:** the sentence people repeat afterwards, true to the source, set big and given time.
+- **The turn and the two ahas:** a turn is where the film changes direction, usually where the viewer becomes the subject. Make each turn an aha: a moment when the viewer's belief changes, not only the picture. A film of 30 s or more has two, both inside the first 60 s. Aha 1 is the reframe: the viewer sees their own situation differently (the insight, made felt). Aha 2 turns on aha 1: it shows the reframe was part of something larger, and it lands the proposition. A film under 30 s keeps one. Design them first; picture, voice and music change on each, and every rule below that names the turn applies to each.
+- **Hero line:** the sentence people repeat afterwards, true to the source, set big and given time. In a film of 30 s or more, it states aha 2 or follows it within three seconds.
 - **Ending:** the payoff answers the opening, then come the brand and an invitation.
 
-Test: tell the film in one breath. "We open on X, turn on Y, and leave on Z." If it needs "and also", cut.
+Test: tell the film in one breath. "We open on X, turn on Y, that turns again on Z, and we leave on W." Each turn comes from the one before it ("because of that"). If it needs "and also", cut.
 
 **From source to film.** A film is not the source's table of contents. Choose the proofs that move this audience and leave the rest in the source. For an analysis or a report, the film is its trailer: the question, the most surprising finding, a reason to open the full thing. Find the human stakes even in technical material.
 
@@ -128,21 +133,26 @@ All of this goes in `BRIEF.md`, written before any generation and updated whenev
 - **The source supplies the claims; you write the lines.** Quote verbatim only names, titles, program names, taglines and legal lines.
 - **Voice and grammar:** second person, present tense, short declaratives. Questions belong on screen; the voice makes statements.
 - **Word count:** about 160 words a minute while speaking, with at least a third of the film free of voice, so music and picture can land things. A 30 s film takes 35 to 50 words.
-- **Marks:** give each line its one emphasis word, its pauses (`/`) and the turn.
+- **Marks:** give each line its one emphasis word, its pauses (`/`) and each flip.
 - **Write emphasis with punctuation, not typography.**
   - A full stop before the key word gives the held beat; an exclamation mark gives it lift.
   - Keep capitals and ellipses out of voice text. On eleven_v4 voices they often produce a whisper or a creak on exactly the word that must land. Across two runs of the opener in two harnesses they did this to "week", "bigger", "Yours" and "one". Re-voiced with plain punctuation and "!", the words measured as voiced; re-voiced with the capitals kept, "bigger" and "Yours" stayed creaky.
   - Measure every emphasis word (5.3), whatever you write.
 - **Keep the word that must land out of the last, unstressed place.** A voice lets go of an utterance after its stress. On an eleven_v4 voice that came out breathy even with "!": the team's name when it ended a sentence, the last syllable of a two-word rallying cry in every take, and the last word of a slogan that ended on a repeated noun in all eight takes. A comma in place of the full stop, so the name ran on into one more word, kept it voiced and let that word lift. Put the key word where the stress falls, or let the line play in type.
-- **Read it aloud** at 150 words a minute against the beat sheet, and cut any line the picture already says.
+- **Read it aloud** at the casting brief's pace against the beat sheet, and leave a second of slack, and cut any line the picture already says.
 - **Names:** say a person's name together with their organization, and leave titles on screen. Put tricky names in a pronunciation table.
 
 ### 3.2 Beat sheet and legibility
 
-One row per beat with these columns: time, music (section and hit), picture (the visual idea), voice, on-screen words, motif state, sound, and the job (what the viewer knows or feels now that they did not two seconds ago).
+One row per beat with these columns: time, music (section and hit), picture (the visual idea), voice, on-screen words, motif state, sound, the role (pose, plant, hold, flip, settle, proof or button), and the job (what the viewer believed before, and what they know or feel now that they did not two seconds ago).
 
 - **The grid is for sync, not for structure.** Put entrances and cuts on beats, but let scene lengths follow the story: hold the beat that matters, compress a list into a burst, let one moment breathe. Equal blocks read as slides.
 - **Every beat changes something.** If removing a beat loses nothing, remove it.
+- **The aha clock.** Pose the question or the claim by 3 s in every cut. 15 s: one aha at 3 to 8 s. 30 s: aha 1 at 8 to 12 s, aha 2 at 20 to 24 s. 60 s: 15 to 24 s and 40 to 50 s. 90 s: 20 to 28 s and 45 to 58 s. Between rows, scale from the nearer one. The hero line and the brand card come after the last aha; a small brand mark may sit on screen earlier (9). No run of more than about 15 s of proof without a plant or a flip. These are starting defaults; tune them on the films you make.
+- **Breath and settle.** The flip is the word where the old belief breaks, not the line that explains it afterwards; if the viewer could finish the line during the breath, the flip came earlier. Before it, 0.5 to 1.5 s with no voice and the score thinned or stopped. After it, at least 1 s with nothing new to read. Key each flip to one word, image or sound; picture, voice and music may change with it on the same frame, but nothing else new arrives.
+- **Plant and pay.** Each flip has a plant shown or said earlier, at least 5 s earlier in a film of 30 s or more: a word, an object, a sound or a motif state that looks incidental and is not explained. It rides inside another beat and adds none; no voice line, caption or camera move points at it, or the viewer predicts the flip. A plant is seen, not read: it is not a line the narrator must carry (3.2). The flip changes what it meant. The brief names, for aha 2, the earlier line or image that now means something else.
+- **Pose, guess, break.** Pose the question, leave room to guess, then break the guess. If a stranger can finish the line before the flip, it confirms; it is not an aha.
+- **The viewer's aha.** Write each aha as the sentence a viewer would say to a friend ("Oh, so I can..."). If the sentence is about the product ("it does X"), rewrite the flip.
 - **One idea per frame.** The most important words are the largest thing on screen.
 - **Type sizes for a room, on a 1080-pixel frame:**
   - story lines (the words the film is saying): 72 px or more;
@@ -153,7 +163,7 @@ One row per beat with these columns: time, music (section and hit), picture (the
 - **Reading time.** Every string stays fully visible and still for at least 0.3 s per word plus 0.5 s. A line the narrator says stays up for as long as she says it, plus 0.3 s.
 - **Lists and agendas.** This is the classic failure: six cards arriving in 2.5 s with no voice cannot be read. Give each item its own moment and say it, or cut items.
 - **The narrator carries what matters on screen.** If a line must be read, she says it, or it gets a held moment of its own.
-- **Cut-downs:** plan them now. Decide which beats carry the hook, the offer and the brand in 15 s, and whether the platform needs a square or vertical version.
+- **Cut-downs:** plan them now. A 15 s cut keeps one whole pair from the master, a plant and its flip, usually the pair that lands the proposition, with aha 1's setup folded into one line or frame so the flip still has something to turn. Never keep a flip without its plant, its breath and its settle. Name the master ranges, which aha each carries, which beats carry the hook, the offer and the brand, and whether the platform needs a square or vertical version.
 
 ### 3.3 The motif and its arc
 
@@ -162,13 +172,13 @@ Choose one motif drawn from the brand. Write its arc as states that change meani
 - **The teaser:** a square cursor in the brand's color goes from waiting, to the noise, to ownership (every question mark takes the brand's color on "you"), to the opening, the work, the statement (it types the hero line and becomes its full stop), the frame and the brand.
 - **The opener:** one gradient dot in the company's field becomes the dot the camera dives into, then the people, then the bullet of each moment, the padlock, the ring, and finally the joke's full stop.
 
-Its largest change lands on the turn or the payoff. Never drain the motif to satisfy a copy check; change the words instead.
+Its largest changes land on the two flips. Never drain the motif to satisfy a copy check; change the words instead.
 
 ### 3.4 Casting and voice direction
 
 - **Casting brief:** accent, age, register, warmth against authority and pace, matched to the audience, the room and the user's direction.
 - **Cast every film for its own audience.** The opener first reused the teaser's voice, whose accent was not the staff audience's own, and that was the first note. Recast as a warm voice in the audience's accent, it landed.
-- **Choose by measurement, then by ear:** shortlist two or three voices, generate the turn line with each, and reject takes by measurement. Measurement cannot hear drama, so play the finalists to the client in context, on the film's sync points over the real bed, and start from voices the client has already approved. On the reel, two measured recasts lost to the first narrator.
+- **Choose by measurement, then by ear:** shortlist two or three voices, generate the aha 1 line with each, and reject takes by measurement. Measurement cannot hear drama, so play the finalists to the client in context, on the film's sync points over the real bed, and start from voices the client has already approved. On the reel, two measured recasts lost to the first narrator.
 - **Direct each line** through its attitude and its emphasis word, written as punctuation (3.1).
 - **Audio tags:** use them sparingly and measure what they did. `[confident]` on a short title gave four whispered takes.
 
@@ -176,7 +186,7 @@ Its largest change lands on the turn or the payoff. Never drain the motif to sat
 
 Brief the music as you would a composer, then turn the brief into the generator prompt.
 
-- **Its job and its arc,** mapped to the shape: a build under the opening, a hit on the turn, a breakdown under the reflective beat, a swell into the payoff, a clean release.
+- **Its job and its arc,** mapped to the shape: a build under the opening, a breath and a hit on aha 1, a breakdown under the reflective beat where aha 2 is planted, a bigger swell or a stop on aha 2, a clean release. Give the two flips different gestures, so the second does not sound like an echo of the first.
 - **Instrumentation for the subject's world:**
   - The teaser: piano, strings and pulse.
   - The opener: a marching drumline with brass.
@@ -217,22 +227,7 @@ When the client hands you an image to feature (a campaign mark, a diagram, a key
 
 Give each scene one signature move that suits its idea, and never bring two scenes on the same way.
 
-| Move | Use it for |
-| --- | --- |
-| Question cloud in true 3D, camera push, parallax fly-through | Overwhelm, noise, a crowd of voices |
-| A line that opens like an aperture onto an image | Revelation, arrival |
-| A camera dive into one dot of a field, which opens as the next world | Company to team, context to story |
-| Portrait printed up as a halftone, or drawn on through a hatching field | Bringing a person into the story |
-| Spotlight tour: each face comes forward, large, with name and role | A team whose people are the point |
-| People icons in small groups gathering into one crowd, then one ring | A team coming together |
-| Numbered moments in the template's section style, one per beat, said aloud | An agenda or a week |
-| A padlock that snaps shut, a music stop for the hint, a spring on the downbeat | A gag with a payoff |
-| A supplied graphic built on the beat, entering and leaving through the motif | Featuring the client's key visual |
-| A field of color that opens as a circle from where its number sits | Each moment of a week, with the template's colors instead of its slides |
-| A field that closes into the next thing's ring: its content clears first, then the field thins | Handing a scene to a person or a tour |
-| A disc that bursts into colored groups on the turn word | One part becoming the whole |
-| The motif types the hero line and becomes its full stop | The statement |
-| The motif grows from its center and floods the frame into the end card | Release into the brand |
+The moves that served the two films that set the bar, and what each is for, are in `references/craft-moves.md`.
 
 **Restraint holds it together.** Motion should feel typeset, not effects-driven:
 
@@ -244,27 +239,28 @@ Give each scene one signature move that suits its idea, and never bring two scen
 
 ### 3.10 Styleframes
 
-Once the storyboard is approved, and before writing the whole composition, render the first frame, the turn, the hero line and the end card at full resolution. Judge them as a designer: hierarchy, contrast, brand fidelity, and whether you would pause on them. Fix the look here, where it is cheap.
+Once the storyboard is approved, and before writing the whole composition, render the first frame, the frames just before and after each flip, the hero line and the end card at full resolution. Judge them as a designer: hierarchy, contrast, brand fidelity, and whether you would pause on them. Fix the look here, where it is cheap.
 
 ## 4. The creative gate and the storyboard
 
 Before showing anyone the plan, review it against this rubric.
 
-- **Who reviews:** on a long or unattended run, a fresh agent that has not seen the work. Give it the brief, the claims ledger, `BRIEF.md` and the styleframes as images it can see. If it cannot see them, it must say so in its verdict. When the user is waiting, or there is no agent tool, do a separate pass yourself, reading `BRIEF.md` as a stranger would.
-- **What it returns:** pass or fail with a reason on each point, the weakest beat, and what to cut.
+- **Who reviews:** on a long or unattended run, a fresh agent that has not seen the work. Give it the brief, the claims ledger and `BRIEF.md`; styleframes come after approval (3.10), so the gate judges the film on paper. When the user is waiting, or there is no agent tool, do a separate pass yourself, reading `BRIEF.md` as a stranger would, and mark the cold read not run; the person's cover-the-flip test at the storyboard gate stands in for it.
+- **What it returns:** pass or fail with a reason on each point, naming any clause that fails, the weakest beat, and what to cut.
+- **Cold read:** first give the reviewer only time, picture, voice and on-screen words, in plain description: no role, job, motif-state or sound columns, no named ahas, and no wording that marks a callback, a pause or a change of state ("returns", "along the path it left", "nothing moves"), since each of those tells a stranger where to look. Give times per beat, not per event, for the same reason. It names the moments where a viewer's belief changes, and what changed. If they are not the declared flips, within 2 s, the ahas are not on the page: change the film, not the labels. A cold read shows structure, not felt effect; the person at the storyboard gate judges that.
 
 1. The insight is about the audience, not the product.
 2. The film says in plain words what the product is for, and there is one proposition, in one sentence.
-3. The film can be told in one breath.
-4. The first frame moves, and a question or a frame is posed within three seconds.
-5. There is a turn, and picture, voice and music all change on it.
-6. The motif's states carry meaning and change with the story.
-7. The ending answers the opening and lands the brand with an invitation.
-8. Every beat changes what the viewer knows or feels.
-9. The script reads aloud in time, with a third of the film free of voice; it is written for the ear, with emphasis as punctuation; every claim traces to the ledger.
-10. Scene lengths vary, with at least one held moment and one burst.
-11. Each scene has a distinct craft move, and nothing reads as a slide.
-12. The music brief names an arc, instrumentation for this subject, and the anti-references.
+3. The film can be told in one breath, and each turn comes from the one before it, never "and also".
+4. The first frame moves, and by three seconds a question, or a claim the viewer will want tested, is posed; the brief says what the viewer will guess.
+5. Aha 1 and aha 2 (one under 30 s) are named in the brief, each with its time on the 3.2 clock, what the viewer believed just before, what they believe just after, and the one word, image or sound that flips it; the cold read, if run, found the same moments; picture, voice and music change on each, in different ways.
+6. Each flip has an unexplained plant earlier (at least 5 s in a film of 30 s or more), aha 2 changes what aha 1 meant when there are two, and each aha reads as the viewer's own sentence, not a product claim.
+7. The motif's states carry meaning and change with the story, with its largest changes on the flips.
+8. The ending answers the opening in a way the opening did not predict, then lands the brand with an invitation.
+9. Every beat has a role and changes what the viewer knows or feels; no run of proof lasts more than about 15 s without a plant or a flip.
+10. The script reads aloud in time, with a third of the film free of voice; it is written for the ear, with emphasis as punctuation; every claim traces to the ledger.
+11. Scene lengths vary, with at least one held moment and one burst; each scene has a distinct craft move, and nothing reads as a slide.
+12. The music brief names an arc, a breath and a hit for each flip, instrumentation for this subject, and the anti-references.
 13. Type sizes and reading times meet 3.2, the narrator carries every line that must be read, and a viewer with no insider knowledge can follow every term.
 14. The voice is cast for this audience, and every featured person gets a moment large and long enough to know them.
 15. Supplied graphics are built, not flashed; leaders' paraphrases carry no quote marks; no photo is upscaled.
@@ -275,12 +271,12 @@ Fix every failure, then make the storyboard.
 
 Within minutes of the brief, show a person the whole film as a storyboard, and generate nothing until they approve it. `references/storyboard.md` gives the full contents and the approval record.
 
-- **Overview card:** purpose, who it is for, what the viewer will understand or be able to do afterwards, the key terms in plain words, how the film teaches or persuades, the full narration, and the open questions.
-- **One card per frame,** grouped by act with timecodes: a quick sketch, title and timecode, the exact voice line, then Picture, Teaches (or Point), Motion and Sound.
+- **Overview card:** purpose, who it is for, what the viewer will understand or be able to do afterwards, the key terms in plain words, how the film teaches or persuades, the two ahas on a clock strip (time, belief before and after, the flip, the plant), the full narration, and the open questions.
+- **One card per frame,** grouped by act with timecodes: a quick sketch, title and timecode, the exact voice line, then Role, Picture, Teaches (or Point), Motion and Sound. A flip's card shows before and after.
 - **Two or three questions** for the reviewer, such as length, the choice of example, and the feel of voice and music.
 - **Where it lives:** the host's own canvas or design board if it has one; otherwise one self-contained HTML page (start from `references/storyboard-template.html`); in a text-only host, a Markdown table per act.
 - **Sketches are schematic,** drawn with HTML and CSS shapes, never generated images. Screenshot them and check that no icon or doodle sits on text, and keep a recurring motif in the same place from frame to frame.
-- **Record the approval** in `BRIEF.md`: who approved, which storyboard version, and the changes asked for. Any later change to the script reopens the gate.
+- **Record the approval** in `BRIEF.md`: who approved, the approving message quoted word for word, which storyboard version, the ahas approved, and the changes asked for. With no approving message to quote (or, where the host approves with a button, its recorded approval), the gate has not passed. Any later change to the script reopens it.
 
 ## 5. Generate score, voice and sound
 
@@ -302,7 +298,7 @@ Within minutes of the brief, show a person the whole film as a storyboard, and g
   - shift every later marker by the inserted length;
   - to add a bar without a new kind of join, repeat a segment that already follows itself (the opener's v6 played a three-bar groove loop four times instead of three times plus two bars).
 - **Budget in bars.** When a revision adds a beat or a longer line, add whole bars rather than squeezing the gaps between lines below about 0.3 s.
-- **Map the accents.** Run onset analysis on the final score and list its accents and silences. Key reveals land on accents, and a silence before a hit is the breath where the picture holds.
+- **Map the accents.** Run onset analysis on the final score and list its accents and silences. Key reveals land on accents, and a silence before a hit is the breath where the picture holds. Each flip lands on an accent, after its breath and before its settle (3.2).
 
 **5.3 Voice.**
 
@@ -347,23 +343,10 @@ window.getCues = async () => { await ready; return cues(); };   // sound events 
 **6.3 Sync.**
 
 - Key every on-screen beat to a spoken word with `wordFind`, or to a measured music accent, so the picture follows when a line moves.
-- Put the turn's picture change on the turn word itself.
+- Put each flip's picture change on the word, image or sound that flips it.
 - Write these helpers first: a masked reveal and its exit, a write-on, cover-fit images around a face anchor, and an easing set.
 
-**6.4 Layout audit (works with or without eyes).** Instrument the canvas so every frame reports what it draws, then lint the whole film. When this skill ships with its `tools/` folder, paste `tools/audit-hook.js` into the page and run `tools/lint.mjs`; the hook is short enough to write from this outline otherwise:
-
-```js
-const AUDIT = location.search.includes('audit') ? [] : null;
-let AUD_CLIPS = [], AUD_RECT = null, auditBox = null;          // active circular clips; the masked reveal's rectangle
-const auditClip = (x, y, r) => { if (AUDIT) AUD_CLIPS.push([x, y, r]); };   // call beside ctx.clip() of a circle
-const auditUnclip = () => { if (AUDIT) AUD_CLIPS.pop(); };                  // and beside its ctx.restore()
-const auditCover = a => { if (AUDIT && a >= 0.9) AUDIT.push({ type: 'cover', c: AUD_CLIPS.length ? AUD_CLIPS.slice() : [[960, 540, 1e6]] }); };  // after an opaque full-frame fill
-// wrap ctx.fillText and ctx.drawImage to push {type, s|src, px, alpha, clips: AUD_CLIPS.slice(), rect: AUD_RECT, box, scale};
-// in the masked reveal, set AUD_RECT = auditBox(<the mask rectangle>) around the text call, then null.
-// auditResolve(list): cut each box to its rect and clips; drop it if empty, or if a later cover's circles all contain it.
-window.auditAt = async t => { await ready; AUDIT.length = 0; AUD_CLIPS = []; drawFrame(t); return auditResolve(AUDIT); };
-```
-
+**6.4 Layout audit (works with or without eyes).** Instrument the canvas so every frame reports what it draws, then lint the whole film. Paste `tools/audit-hook.js` into the page and run `tools/lint.mjs`. The hook records each string and image the canvas draws, with its size, alpha, clips and mask rectangle; its header shows where each call goes (`auditInstall`, `auditClip`, `auditMask`, `auditCover`, `window.auditAt`).
 Sample every frame; a 66 s film lints in about three minutes. Five rules keep the results honest:
 
 - **Settled strings only.** Judge a string only while it is settled, meaning its box is unchanged for three frames, because masks and moves make strings partial in between.
@@ -422,9 +405,9 @@ for (let f = f0; f < f1; f++) { const url = await page.evaluate(t => window.rend
 
 ## 8. Watch, review, verify
 
-**8.1 Watch it as the audience.** Look at a contact sheet every 0.5 s and at every transition frame by frame; without eyes, read the audit's string timeline as the viewer would. Write the notes a demanding client would write before they have to ("flat on [word]", "this drags", "I can't read that", "who is this?"), act on each, and kill what repeats.
+**8.1 Watch it as the audience.** Look at a contact sheet every 0.5 s and at every transition frame by frame; without eyes, read the audit's string timeline as the viewer would. Write the notes a demanding client would write before they have to ("flat on [word]", "this drags", "I can't read that", "who is this?"), act on each, and kill what repeats. Then check the aha clock against `edit.json` and the stems: measure the voice and score level around each flip (an `ffmpeg` `astats` or `silencedetect` window works) and paste that output in `verification.txt`, with each flip's time.
 
-**8.2 Second critic.** Give a fresh agent the stills at 0.5 s, the script and the mix numbers, with the rubric from section 4. Ask what it would cut, what it did not understand, and what the best moment is. It reviews only what it can actually see, and says which frames it saw second-hand.
+**8.2 Second critic.** Give a fresh agent the stills at 0.5 s, the script and the mix numbers, with the rubric from section 4. Ask what it would cut, what it did not understand, and where its belief changed: the moments of realization, and what it believed before each. If they differ from the brief's ahas, the film is not doing what the brief says. It reviews only what it can actually see, and says which frames it saw second-hand.
 
 **8.3 Motion audit.**
 
@@ -435,7 +418,7 @@ for (let f = f0; f < f1; f++) { const url = await page.evaluate(t => window.rend
   - Give the audit the marked bursts and cuts as a list of time windows (`tools/motion.mjs` reads them from `window.getMarks()`).
   - A 470 px glide needs about 0.5 s of sine easing to keep its speed changes near 10 px a frame; cubic easing over 0.32 s measured 60.
 
-**8.4 Technical gates.** Pass all of these and record the measured numbers in `verification.txt`:
+**8.4 Technical gates.** Pass all of these and record the measured numbers in `verification.txt`. Every result there is a tool's output pasted unedited beside the command that produced it, or a reviewer's returned verdict; a pass you wrote yourself with nothing behind it does not count.
 
 1. Frame count, duration, size, frame rate and BT.709 tags as specified.
 2. No page errors, no decode errors, and no black segment of 0.08 s or longer.
@@ -456,9 +439,10 @@ Passing the gates does not make the film good: they measure craft, not meaning. 
 ## 9. Deliver and document
 
 - **Cut-downs** use the master's own frames and stems:
-  - join two or three source ranges on beats, with a 25 ms score crossfade at each join;
+  - join two to four source ranges on beats, with a 25 ms score crossfade at each join;
   - bring the cut to -14 LUFS and remap the captions;
-  - put the brand on screen within four seconds, and make every beat read with the sound off.
+  - put a brand mark on screen within four seconds, and make every beat read with the sound off;
+  - check that each cut keeps a plant, its flip, the breath before it and the settle after it.
 - **Each version in its own folder:** H.264 web copy, master, cut-downs, SRT and VTT captions, script, posters, `BRIEF.md`, `README.md` and `verification.txt`. Never overwrite an earlier version.
 - **`README.md`,** in this order:
   - the notes, and what changed in answer to each, with before and after numbers;
@@ -483,16 +467,16 @@ Diagnose with measurement, fix the cause, and report before and after numbers. T
 - Corporate electronica.
 - A motif that moves but never means anything.
 - Small labels in a crowded scene; an agenda of cards nobody has time to read.
-- Capitals and ellipses in voice text.
-- A key word left last in its phrase, where the voice lets it go.
+- A turn that changes the picture and the score but not what the viewer believes.
+- A second turn that only adds ("and also"), or an aha that announces a feature.
+- Capitals and ellipses in voice text, or a key word left last in its phrase, where the voice lets it go.
 - Wipes and irises that double-expose the outgoing scene.
-- Enlarging small photos, or sharpening faces with AI.
-- A supplied graphic dropped in as a hard cut.
+- Enlarging small photos, or sharpening faces with AI; a supplied graphic dropped in as a hard cut.
 - Reviewing frames you never saw, or trusting a describing model without checking it against the pixels.
 - Re-running a step from an older copy of the work.
 - Asking for, or keeping, an API key in chat.
 - Copy-check fixes that add labels or drain the metaphor.
-- Calling the film done because the technical gates passed.
+- Calling the film done because the technical gates passed, or grading your own film: a pass recorded without a tool run or an independent reviewer.
 
 ## Writing for the client
 

@@ -55,8 +55,14 @@ def skill_contract():
     content = (ROOT / 'SKILL.md').read_text(encoding='utf-8')
     _, front, body = content.split('---', 2)
     keys = {line.split(':', 1)[0] for line in front.strip().splitlines() if line and not line[0].isspace()}
-    assert keys == {'name', 'description'}, f'Frontmatter keys: {keys}'
-    fields = dict(line.split(':', 1) for line in front.strip().splitlines())
+    # The Agent Skills fields, plus user-invocable, which Amplifier needs to register /sizzle (it defaults to off).
+    # The strict reference validator (skills-ref) rejects user-invocable; drop it if that validator matters more.
+    allowed = {'name', 'description', 'license', 'compatibility', 'metadata', 'user-invocable'}
+    assert {'name', 'description'} <= keys <= allowed, f'Frontmatter keys: {keys}'
+    fields = {k.strip(): v for k, v in (line.split(':', 1) for line in front.strip().splitlines())}
+    version = json.loads((ROOT / 'project.json').read_text(encoding='utf-8'))['version']
+    assert fields.get('version', '').strip().strip('"') == version, 'SKILL.md metadata version differs from project.json'
+    assert len(fields.get('compatibility', '').strip().strip('"')) <= 500, 'Compatibility over 500 characters'
     assert fields['name'].strip().strip('"') == 'sizzle', 'The skill is named sizzle'
     assert len(fields['description'].strip().strip('"')) <= 1024, 'Description over 1024 characters'
     lines = body.lstrip('\n').splitlines()

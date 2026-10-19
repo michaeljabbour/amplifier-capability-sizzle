@@ -36,6 +36,12 @@
   .questions li { margin-bottom: 10px; }
   .questions em { color: var(--muted); font-style: normal; display: block; font-size: 13px; }
 
+  /* Aha clock: the pose, the two flips and the button, placed in per cent of the film's length */
+  .clock { position: relative; height: 64px; border-bottom: 2px solid var(--ink); margin: 0 0 40px; }
+  .clock .mark { position: absolute; bottom: 0; padding: 0 0 6px 6px; border-left: 2px solid var(--accent); font-size: 12px; line-height: 1.3; }
+  .clock .flip { border-color: var(--gold); font-weight: 700; }
+  @media (max-width: 640px) { .clock { height: auto; display: flex; flex-wrap: wrap; gap: 8px 14px; padding-bottom: 6px; } .clock .mark { position: static; } }
+
   /* Acts and frames */
   .act { margin-top: 44px; }
   .act-head { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 20px; }
@@ -99,6 +105,9 @@
     <div class="panel">
       <h2>How it teaches</h2>
       <p>One everyday example anyone can judge in a second. Two cases that fail in different ways, seen before they are named. One change at a time. A question, a silent pause, then the answer. A worked example, then the same idea on other things. A takeaway that stays on the last card. The product comes last.</p>
+      <h2>The two ahas</h2>
+      <p><b>Aha 1 at 0:19.</b> Before: one sign is good and one is bad. After: each sits somewhere on a map, and where it sits says which way to move. Flip: the empty goal corner lights after two seconds of silence. Plant: the motif in the corner of frame 2, which becomes the goal corner.</p>
+      <p><b>Aha 2 at 0:44.</b> Before: this is about signs. After: it is how to write anything people skim. Flip: the passing car becomes a thumb scrolling past an email subject line. Plant: the car that passes both signs without slowing.</p>
       <h2>Narration</h2>
       <ol class="narration">
         <li>Line one, exactly as it will be spoken.</li>
@@ -116,6 +125,13 @@
     </div>
   </section>
 
+  <div class="clock" role="img" aria-label="Aha clock for a 60 second film: pose at 0:03, aha 1 at 0:19, aha 2 at 0:44, button at 0:55">
+    <span class="mark" style="left: 5%">Pose 0:03</span>
+    <span class="mark flip" style="left: 32%">Aha 1 0:19</span>
+    <span class="mark flip" style="left: 73%">Aha 2 0:44</span>
+    <span class="mark" style="right: 0; border-left: 0; border-right: 2px solid var(--accent); padding: 0 6px 6px 0">Button 0:55</span>
+  </div>
+
   <section class="act" aria-labelledby="act1">
     <div class="act-head"><h2 id="act1">Act 1 · See it, name it</h2><span>0:00 to 0:15</span></div>
     <div class="frames">
@@ -130,6 +146,7 @@
           <div class="title"><h3>1 · Beautiful. Nobody stops.</h3><time>0:00 to 0:05</time></div>
           <p class="vo">“This sign is beautiful. Nobody stops.”</p>
           <dl>
+            <dt>Role</dt><dd>Pose: the first case.</dd>
             <dt>Picture</dt><dd>A polished sign on a fence post; a car passes without slowing.</dd>
             <dt>Teaches</dt><dd>Nothing named yet: polish was not enough.</dd>
             <dt>Motion</dt><dd>Slow push on the sign; the car passes on “Nobody stops.”</dd>
@@ -149,6 +166,7 @@
           <div class="title"><h3>2 · Right words. Nobody can read it.</h3><time>0:05 to 0:10</time></div>
           <p class="vo">“This one says the right thing. Nobody can read it.”</p>
           <dl>
+            <dt>Role</dt><dd>Plant: the opposite case. The motif in the corner is the plant for aha 1: it returns as the goal corner.</dd>
             <dt>Picture</dt><dd>Same fence, same car, a crowded cardboard sign. The motif sits in the top corner, clear of the text.</dd>
             <dt>Teaches</dt><dd>The opposite failure. Frames 1 and 2 are contrasting cases.</dd>
             <dt>Motion</dt><dd>The camera tries to read the list and blurs as the car passes.</dd>
@@ -165,6 +183,7 @@
           <div class="title"><h3>3 · Frame title</h3><time>0:10 to 0:15</time></div>
           <p class="vo">“The exact voice line.”</p>
           <dl>
+            <dt>Role</dt><dd>What the frame does in the story. For a flip: aha 1 or 2, before, after.</dd>
             <dt>Picture</dt><dd>What is on screen.</dd>
             <dt>Teaches</dt><dd>What the viewer knows or feels now that they did not before.</dd>
             <dt>Motion</dt><dd>What moves, and how it helps the viewer understand.</dd>
@@ -192,6 +211,7 @@
           <div class="title"><h3>4 · Put them on a map</h3><time>0:15 to 0:21</time></div>
           <p class="vo">“Put them on a map. Which way should each one move?”</p>
           <dl>
+            <dt>Role</dt><dd>Pose, then flip (aha 1) at 0:19, when the empty goal corner lights. Before: one sign is good and one is bad. After: each sits somewhere on a map, and where it sits says which way to move. In the full storyboard, draw the lit corner as a second panel.</dd>
             <dt>Picture</dt><dd>Two axes; each sign in its corner; the goal corner waits empty.</dd>
             <dt>Teaches</dt><dd>Where you are tells you which way to go. Two seconds of silence so the viewer answers first.</dd>
             <dt>Motion</dt><dd>The signs drop into place, then everything holds still.</dd>
@@ -208,6 +228,7 @@
           <div class="title"><h3>5 · Frame title</h3><time>0:21 to 0:30</time></div>
           <p class="vo">“The exact voice line.”</p>
           <dl>
+            <dt>Role</dt><dd>What the frame does in the story. For a flip: aha 1 or 2, before, after.</dd>
             <dt>Picture</dt><dd>What is on screen.</dd>
             <dt>Teaches</dt><dd>What the viewer knows or feels now that they did not before.</dd>
             <dt>Motion</dt><dd>What moves, and how it helps the viewer understand.</dd>
