@@ -102,7 +102,7 @@ After any break, read `STATE.md` before touching anything. Never re-run a step f
 
 ## 2. Find the idea
 
-Write each of these in one or two sentences before anything else. They are the spine; everything later is checked against them.
+Write each of these in one or two sentences before anything else. They are the spine; everything later is checked against them. When the person you are working with wrote the source, ask them first, in one question, what two things they most want a viewer to realize; their answer is the ahas, and your job is to make those land. Record their words verbatim.
 
 - **Purpose:** what the product is for and the problem it solves, in plain words, with its core thesis in the source's own terms. Study the repo, site or deck until you can say it to a stranger. A script that never says this fails, however well it is made.
 - **Insight:** a truth about the audience's situation, not about the product. The teaser: senior leaders hear answers all day from vendors, consultants and their own teams, and few get time away to work on their own question.
