@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28: Public first use
+
+- Add a complete public clone/install path beside the first useful outcome, with prerequisites, safe updates and a full-folder ZIP alternative. Preserve the existing method, films and interactive examples.
+
+
 ## Unreleased
 
 - When the person wrote the source, ask them first what two things they most want a viewer to realize, and build the ahas on their words.

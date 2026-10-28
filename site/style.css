@@ -225,3 +225,6 @@ code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size
   .reel-facts { justify-content: start; grid-template-columns: repeat(2, auto); }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
+
+/* Source installation beside the first useful outcome. */
+.first-run{display:grid;grid-template-columns:1fr 1fr;gap:46px;margin:0 0 36px;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.first-run>div{min-width:0}.first-run h3{font-size:25px;line-height:1.2;margin:0 0 16px}.first-run p{font-size:14px;line-height:1.7}.first-run .note{font-size:12px;margin-top:14px}.first-run pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--wash);padding:18px;font-size:12px;line-height:1.7;margin:0}.first-run code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}@media(max-width:700px){.first-run{grid-template-columns:1fr;gap:28px}}

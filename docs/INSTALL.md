@@ -1,14 +1,27 @@
 # Install Sizzle
 
-People making a short brand film, opener or product reel.
+Bring the audience, one proposition, source assets and a length. Start with a storyboard you can approve; production follows only after that approval and the creative gate.
 
-From this checkout:
+## From the public source
+
+Use Git and Python 3.11 or later. These commands install the complete method into a skills-parent directory:
 
 ```sh
-python3 scripts/capability.py install --dest /path/to/host/skills
+git clone https://github.com/michaeljabbour/amplifier-skill-sizzle.git
+cd amplifier-skill-sizzle
+python3 scripts/capability.py install --dest ~/.agents/skills
 ```
 
-Replace `/path/to/host/skills` with the host's skills parent directory. Keep the complete installed folder, references and license. The installer preserves conflicting local edits; `--replace` retains a dated backup.
+Choose the discovery directory supported by your agent. `~/.agents/skills` is an example. Start a new session if your host only discovers skills at startup, then ask for Sizzle by name with one task. Read the returned result and its sources before acting on it.
 
+The installer refuses conflicting files. Keep your changes before deliberately replacing a copy. It does not register a host, start a service or prove model behavior.
 
-Existing production lessons and technical gates are preserved. This consolidation did not generate a film or establish new creative effectiveness.
+## Without a checkout
+
+Download the complete ZIP from [the public site](https://michaeljabbour.github.io/amplifier-skill-sizzle/#use-skill), extract it and place the whole skill folder in your host’s skills directory. Keep all references, helpers and license files together. The single SKILL.md download is for reading; use the whole folder to install.
+
+## What to expect
+
+Bring the audience, one proposition, source assets and a length. Start with a storyboard you can approve; production follows only after that approval and the creative gate.
+
+Instant footage from a prompt. Rendering and provider calls need their own tools, access and budget.

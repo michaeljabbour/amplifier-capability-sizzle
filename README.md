@@ -8,6 +8,18 @@ The picture is drawn on an HTML canvas as a pure function of time and rendered f
 
 This project pairs the reusable [`sizzle` skill](SKILL.md) with its [tools](tools/README.md), a [reference of client lessons](references/lessons.md) and an explanatory static website. The website opens with a 60-second reel made with the skill and audited with its own tools; [docs/REEL.md](docs/REEL.md) tells how.
 
+## First use
+
+Bring the audience, one proposition, source assets and a length. Start with a storyboard you can approve; production follows only after that approval and the creative gate.
+
+```sh
+git clone https://github.com/michaeljabbour/amplifier-skill-sizzle.git
+cd amplifier-skill-sizzle
+python3 scripts/capability.py install --dest ~/.agents/skills
+```
+
+Requires Git and Python 3.11+. Use the skills directory supported by your agent. Ask for Sizzle in a new session and supply one real task. The [install guide](docs/INSTALL.md) explains the complete ZIP alternative and safe updates.
+
 ## Use the skill
 
 Install the skill as a folder named `sizzle` with `SKILL.md`, `references/` and `tools/` inside it, in your host's skills directory: for example `~/.amplifier/skills/sizzle` for Amplifier, `~/.claude/skills/sizzle` for Claude Code, or `~/.agents/skills/sizzle` for hosts that read the shared folder. The site's skill bundle is that folder, zipped.

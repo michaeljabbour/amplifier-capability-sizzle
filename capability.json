@@ -41,7 +41,7 @@
       "role": "method",
       "action": "keep",
       "why": "One finished-film promise; retain approvals before generation and tool-independence.",
-      "interface": "Approved storyboard \u2192 versioned deliverable + verification receipt.",
+      "interface": "Approved storyboard → versioned deliverable + verification receipt.",
       "sources": [
         "https://github.com/michaeljabbour/amplifier-skill-sizzle/blob/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/SKILL.md",
         "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/references",
@@ -114,7 +114,7 @@
       "role": "adapter",
       "action": "park",
       "why": "A video wrapper belongs behind a callable execution boundary; do not import it into direction prompts.",
-      "interface": "Approved video job \u2192 artifact or honest failure, with cost receipt.",
+      "interface": "Approved video job → artifact or honest failure, with cost receipt.",
       "sources": [
         "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/modules/tool-video",
         "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/video-generator.md"
@@ -217,7 +217,7 @@
     "docs/INSTALL.md",
     "docs/CONSOLIDATION.md"
   ],
-  "publication_status": "Local consolidation candidate; existing published versions remain separate.",
+  "publication_status": "Public source, site and documented installation path are available. Evidence scopes are recorded separately.",
   "site_builder": "native",
   "skill_name": "sizzle",
   "portable_include": [
@@ -225,5 +225,6 @@
     "LICENSE",
     "references",
     "tools"
-  ]
+  ],
+  "repository_url": "https://github.com/michaeljabbour/amplifier-skill-sizzle"
 }
