@@ -33,3 +33,5 @@
 - Add a static site with an invented film whose audit runs in the browser, built and checked with Python's standard library and published with GitHub Pages.
 
 Sizzle grew out of an earlier kinetic brand film skill, which it replaces.
+
+- Kept pasted credentials out of files and preserved environment-only provider configuration. Added the MIT notice to the portable bundle and a conflict-preserving local installer.

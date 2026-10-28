@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "id": "sizzle",
+  "display_name": "Sizzle",
+  "kind": "skill",
+  "promise": "Direct the film before generating it, then check the picture and sound.",
+  "audience": "People making a short brand film, opener or product reel.",
+  "trigger": "Direct the story, obtain storyboard approval, then produce and verify the film.",
+  "skill_path": ".",
+  "install_commands": [
+    "python3 scripts/capability.py install --dest /path/to/host/skills"
+  ],
+  "runtime_install_commands": [],
+  "modes": [],
+  "examples": [],
+  "boundaries": [
+    "The existing canonical method and native interfaces remain the source of truth.",
+    "Publication, source inspection, component tests and outside-user benefit are separate claims."
+  ],
+  "evidence_summary": "Existing production lessons and technical gates are preserved. This consolidation did not generate a film or establish new creative effectiveness.",
+  "verification": [],
+  "sources": [
+    {
+      "repo": "amplifier-skill-sizzle",
+      "commit": "ab5fc9a82d395f518bb7695428c9d7b02af173e8",
+      "role": "Existing implementation and retained history",
+      "license": "MIT"
+    }
+  ],
+  "consolidation": [
+    {
+      "repo": "amplifier-skill-sizzle",
+      "revision": "c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a",
+      "paths": [
+        "SKILL.md",
+        "references",
+        "tools"
+      ],
+      "destination": "amplifier-skill-sizzle:existing canonical skill and production QA",
+      "destination_status": "proposed unless keep explicitly retains current home",
+      "role": "method",
+      "action": "keep",
+      "why": "One finished-film promise; retain approvals before generation and tool-independence.",
+      "interface": "Approved storyboard \u2192 versioned deliverable + verification receipt.",
+      "sources": [
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/blob/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/SKILL.md",
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/references",
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/tools"
+      ],
+      "source_paths": [
+        {
+          "path": "SKILL.md",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/blob/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/SKILL.md"
+        },
+        {
+          "path": "references",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/references"
+        },
+        {
+          "path": "tools",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/tools"
+        }
+      ]
+    },
+    {
+      "repo": "amplifier-bundle-creative",
+      "revision": "790c98f05d78a17d118bcfe067cb01c8a5e65d3b",
+      "paths": [
+        "agents/intake-analyst.md",
+        "agents/qa-reviewer.md",
+        "context",
+        "spec"
+      ],
+      "destination": "amplifier-skill-sizzle:optional intake/provenance references after comparison; keep originals as attributed history",
+      "destination_status": "proposed unless keep explicitly retains current home",
+      "role": "reference",
+      "action": "extract",
+      "why": "Harvest distinct useful method rather than maintain a second finished-film front door.",
+      "interface": "Brief/intake and provenance fields mapped to Sizzle contract.",
+      "sources": [
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/intake-analyst.md",
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/qa-reviewer.md",
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/context",
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/spec"
+      ],
+      "source_paths": [
+        {
+          "path": "agents/intake-analyst.md",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/intake-analyst.md"
+        },
+        {
+          "path": "agents/qa-reviewer.md",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/qa-reviewer.md"
+        },
+        {
+          "path": "context",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/context"
+        },
+        {
+          "path": "spec",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/spec"
+        }
+      ]
+    },
+    {
+      "repo": "amplifier-bundle-creative",
+      "revision": "790c98f05d78a17d118bcfe067cb01c8a5e65d3b",
+      "paths": [
+        "modules/tool-video",
+        "agents/video-generator.md"
+      ],
+      "destination": "amplifier-bundle-creative:provider adapter retained/parked until real contract tests; Sizzle calls through a tool",
+      "destination_status": "proposed unless keep explicitly retains current home",
+      "role": "adapter",
+      "action": "park",
+      "why": "A video wrapper belongs behind a callable execution boundary; do not import it into direction prompts.",
+      "interface": "Approved video job \u2192 artifact or honest failure, with cost receipt.",
+      "sources": [
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/modules/tool-video",
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/video-generator.md"
+      ],
+      "source_paths": [
+        {
+          "path": "modules/tool-video",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/modules/tool-video"
+        },
+        {
+          "path": "agents/video-generator.md",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/video-generator.md"
+        }
+      ]
+    },
+    {
+      "repo": "amplifier-bundle-creative",
+      "revision": "790c98f05d78a17d118bcfe067cb01c8a5e65d3b",
+      "paths": [
+        "samples",
+        "docs"
+      ],
+      "destination": "amplifier-bundle-creative:retained reference assets and production history outside installed skill",
+      "destination_status": "proposed unless keep explicitly retains current home",
+      "role": "research",
+      "action": "keep",
+      "why": "Hand-produced reference film predates the scaffold; it is not proof that the bundle produced it.",
+      "interface": "Attribution and artifact provenance, not benchmark outcome.",
+      "sources": [
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/samples",
+        "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/docs"
+      ],
+      "source_paths": [
+        {
+          "path": "samples",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/samples"
+        },
+        {
+          "path": "docs",
+          "url": "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/docs"
+        }
+      ]
+    },
+    {
+      "repo": "amplifier-skill-sizzle",
+      "paths": [
+        "SKILL.md"
+      ],
+      "destination": "amplifier-skill-sizzle:canonical method or implementation",
+      "role": "method",
+      "action": "keep",
+      "why": "Approved storyboard, one visual motif, synchronized narration/music/type, technical QA and disciplined revision.",
+      "interface": "Versioned request/result or plain-file contract; adapters do not own the method.",
+      "revision": "c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a",
+      "sources": [
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/blob/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/SKILL.md"
+      ],
+      "source_paths": [
+        {
+          "path": "SKILL.md",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/blob/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/SKILL.md"
+        }
+      ]
+    },
+    {
+      "repo": "amplifier-skill-sizzle",
+      "paths": [
+        "tools",
+        "references",
+        "docs"
+      ],
+      "destination": "amplifier-skill-sizzle:direction/QA; invoke TeaserKit/Imagen through contracts",
+      "role": "method/tool",
+      "action": "keep",
+      "why": "Keep approved creative decisions with Sizzle and reusable capture/provider implementations independent.",
+      "interface": "Approved storyboard, shot/job receipts, technical measurements and human acceptance.",
+      "revision": "c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a",
+      "sources": [
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/tools",
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/references",
+        "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/docs"
+      ],
+      "source_paths": [
+        {
+          "path": "tools",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/tools"
+        },
+        {
+          "path": "references",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/references"
+        },
+        {
+          "path": "docs",
+          "url": "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/docs"
+        }
+      ]
+    }
+  ],
+  "docs": [
+    "docs/INSTALL.md",
+    "docs/CONSOLIDATION.md"
+  ],
+  "publication_status": "Local consolidation candidate; existing published versions remain separate.",
+  "site_builder": "native",
+  "skill_name": "sizzle",
+  "portable_include": [
+    "SKILL.md",
+    "LICENSE",
+    "references",
+    "tools"
+  ]
+}

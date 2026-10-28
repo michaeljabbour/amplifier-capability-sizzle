@@ -75,3 +75,10 @@ The text-to-speech adapters were checked against a local stand-in for each servi
 ## License and provenance
 
 MIT; see [LICENSE](LICENSE). The family theme snapshot keeps its own [MIT notice](site/theme/LICENSE). The page follows the Taste × Elegance skill site as a design and implementation reference.
+
+
+## Portable capability and ownership
+
+Direct the film before generating it, then check the picture and sound.
+
+Read the [installation guide](docs/INSTALL.md) for the supported local path and [consolidation record](docs/CONSOLIDATION.md) for ownership and evidence limits. Canonical catalog name: **Sizzle**; repository: `amplifier-skill-sizzle`.
