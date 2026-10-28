@@ -24,4 +24,4 @@ Download the complete ZIP from [the public site](https://michaeljabbour.github.i
 
 Bring the audience, one proposition, source assets and a length. Start with a storyboard you can approve; production follows only after that approval and the creative gate.
 
-Instant footage from a prompt. Rendering and provider calls need their own tools, access and budget.
+Rendering and provider calls require production tools, configured access and an approved budget.
