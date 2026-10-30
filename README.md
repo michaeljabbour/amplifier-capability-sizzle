@@ -71,6 +71,7 @@ The Pages workflow builds and checks `_site/` on pushes to `main`, then publishe
 - `references/lessons.md`: the client notes behind the rules, and what answered each.
 - `references/storyboard.md` and `references/storyboard-template.html`: what the storyboard contains, where it lives, how its approval is recorded, and a self-contained HTML page to start from.
 - `references/craft-moves.md`: the signature moves that served the two source films, and what each is for.
+- `references/demo-video.md` and `references/demo-video-script.md`: a second approach, for narrated demos of software products built in HyperFrames from screen recordings, and the script template it starts from.
 - `tools/`: the audit hook, layout lint, motion audit, voice, mix, speech and score tools, the text-to-speech adapter, and a fixture page.
 - `docs/EXAMPLES.md`: a worked, invented example, from brief to audited cut.
 - `docs/VALIDATION.md`: what was checked, how, and what was not.

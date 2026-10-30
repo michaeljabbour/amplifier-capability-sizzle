@@ -57,3 +57,7 @@ Narration: <line>
 Install it with one prompt. Paste this into your agent:
 
 <Install prompt>
+
+## Approval
+
+<Who approved, the date, and their message quoted word for word. A later change to the narration reopens this.>
