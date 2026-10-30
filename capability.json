@@ -41,7 +41,7 @@
       "role": "method",
       "action": "keep",
       "why": "One finished-film promise; retain approvals before generation and tool-independence.",
-      "interface": "Approved storyboard → versioned deliverable + verification receipt.",
+      "interface": "Approved storyboard \u2192 versioned deliverable + verification receipt.",
       "sources": [
         "https://github.com/michaeljabbour/amplifier-skill-sizzle/blob/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/SKILL.md",
         "https://github.com/michaeljabbour/amplifier-skill-sizzle/tree/c21f5c1786db193f8e6e9087ce4b9f76d9bcfb4a/references",
@@ -114,7 +114,7 @@
       "role": "adapter",
       "action": "park",
       "why": "A video wrapper belongs behind a callable execution boundary; do not import it into direction prompts.",
-      "interface": "Approved video job → artifact or honest failure, with cost receipt.",
+      "interface": "Approved video job \u2192 artifact or honest failure, with cost receipt.",
       "sources": [
         "https://github.com/michaeljabbour/amplifier-bundle-creative/tree/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/modules/tool-video",
         "https://github.com/michaeljabbour/amplifier-bundle-creative/blob/790c98f05d78a17d118bcfe067cb01c8a5e65d3b/agents/video-generator.md"
@@ -226,5 +226,85 @@
     "references",
     "tools"
   ],
-  "repository_url": "https://github.com/michaeljabbour/amplifier-skill-sizzle"
+  "repository_url": "https://github.com/michaeljabbour/amplifier-capability-sizzle",
+  "name": "amplifier-capability-sizzle",
+  "legacy_names": [
+    "amplifier-skill-sizzle"
+  ],
+  "contract_version": "amplifier-capability/v1",
+  "version": "0.1.1",
+  "version_basis": "Existing release metadata",
+  "engine": "LLM",
+  "engine_components": {
+    "caller_method": "LLM"
+  },
+  "surfaces": [
+    "agent-skills"
+  ],
+  "portable_method": {
+    "name": "sizzle",
+    "path": ".",
+    "include": [
+      "SKILL.md",
+      "LICENSE",
+      "references",
+      "tools"
+    ],
+    "contract": "Agent Skills directory; caller applies the method; no independent execution loop is installed."
+  },
+  "interfaces": {
+    "portable": {
+      "input": "Caller task and explicitly authorized context",
+      "output": "Direct the film before generating it, then check the picture and sound.",
+      "failure": "Report insufficient evidence, unsupported context or host limitation; never turn discovery into an execution claim."
+    },
+    "native": {
+      "distribution": null,
+      "entrypoints": {},
+      "docs": [
+        "docs/INSTALL.md",
+        "docs/CONSOLIDATION.md"
+      ],
+      "status": "Existing declared entrypoints preserved; runtime signatures, service access and installation tests remain separate evidence."
+    },
+    "host_adapters": {
+      "amplifier_bundle": null,
+      "grants_autonomy": false
+    }
+  },
+  "permissions": {
+    "installation": {
+      "network": false,
+      "executes_capability_code": false,
+      "writes": [
+        "Selected discovery folders",
+        ".capability-state transaction backups"
+      ],
+      "grants_runtime_permissions": false
+    },
+    "runtime": {
+      "status": "Host/caller authorizes each operation; installation is not a tool allowlist or standing approval.",
+      "declared_boundaries": [
+        "The existing canonical method and native interfaces remain the source of truth.",
+        "Publication, source inspection, component tests and outside-user benefit are separate claims."
+      ]
+    },
+    "secret_names": {
+      "discovery_requires": [],
+      "native_runtime_inventory": "See native documentation; no credentials are bundled or inferred."
+    }
+  },
+  "dataflow": {
+    "installation": "Read pinned tracked portable source and copy locally with SHA-256 receipts. No source text is transmitted.",
+    "method": "Caller supplies authorized context; existing promise and boundaries govern output.",
+    "native_runtime": "Provider/network/storage flows are owned by native interfaces and host authorization; these files do not enable them."
+  },
+  "source_policy": {
+    "revision": "Explicit full40-character Git commit required at installation; never infer latest.",
+    "repository_rename": "Public identity may change; skill folder, imports, entrypoints, tool IDs and schemas remain stable.",
+    "research": ".research/market remains local and ignored; AGENTS governs refresh."
+  },
+  "repository_aliases": [
+    "https://github.com/michaeljabbour/amplifier-skill-sizzle"
+  ]
 }

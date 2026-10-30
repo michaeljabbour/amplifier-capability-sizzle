@@ -38,7 +38,7 @@ A good run returns a storyboard first, within minutes: an overview of the purpos
 
 ## Voice, music and sound
 
-The text-to-speech provider is yours to choose. Set `SIZZLE_TTS_PROVIDER` to `elevenlabs`, `openai`, `azure`, `google` or `command` (any local engine or command line), with `SIZZLE_TTS_VOICE` and, where it applies, `SIZZLE_TTS_MODEL`. Keys live only in environment variables; `python3 tools/tts.py --check` shows what is set without printing them. Music and sound effects come from a generator your host offers, or from licensed tracks and effects you supply. See [the tools guide](tools/README.md#voice) for each provider's variables and command-line examples.
+The text-to-speech provider is yours to choose. Set `SIZZLE_TTS_PROVIDER` to `elevenlabs`, `openai`, `azure`, `google` or `command` (any local engine or command line), with `SIZZLE_TTS_VOICE` and, where it applies, `SIZZLE_TTS_MODEL`. Keys live only in environment variables; `python3 tools/tts.py --check` shows what is set without printing them. Music and sound effects come from a generator your host offers, or from licensed tracks and effects you supply. `SIZZLE_TTS_COMMAND` is trusted configuration (it runs locally with your privileges and is killed after `SIZZLE_TTS_COMMAND_TIMEOUT` seconds, default 120). See [the tools guide](tools/README.md#voice) for each provider's variables and command-line examples.
 
 ## How the checks work
 

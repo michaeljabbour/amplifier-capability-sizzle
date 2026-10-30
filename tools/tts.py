@@ -11,6 +11,9 @@ Configuration comes from the environment, never from files in the project:
     SIZZLE_TTS_MODEL      the model, where the provider has one
     SIZZLE_TTS_COMMAND    for "command": a command line with {out}, {text}, {text_file} and {voice} placeholders.
                           Without {text} or {text_file}, the text goes to the command's standard input.
+                          TRUSTED CONFIGURATION: it runs as a local command with your privileges. Set it only from
+                          your own environment, never from project files or text you did not write.
+    SIZZLE_TTS_COMMAND_TIMEOUT  seconds before the command is killed (default 120; --command-timeout overrides)
     SIZZLE_TTS_COMMAND_EXT  the format that command writes, as an extension (default .wav; .aiff for macOS say)
 Keys: ELEVENLABS_API_KEY; OPENAI_API_KEY (OPENAI_BASE_URL for a compatible endpoint); AZURE_SPEECH_KEY with
 AZURE_SPEECH_REGION; GOOGLE_API_KEY. Flags override the variables. Keys are never printed or logged.
@@ -19,6 +22,10 @@ Each take is one paid request: there are no automatic retries. Providers that re
 same text give one distinct take; vary the punctuation or --style instead. Every request is appended to a
 generation log (generation-log.jsonl beside the output, or --log). Audio is converted to the output's
 extension with ffmpeg when the provider returns another format. Standard library only, plus ffmpeg.
+
+--lines ids become file names inside --dir, so they must be plain names (no path separators, "..", absolute
+paths, or NUL); anything that would resolve outside --dir is refused before a request is paid for. Existing
+files are overwritten by default (as before); pass --no-overwrite to refuse instead.
 """
 import argparse
 import base64
@@ -32,12 +39,52 @@ import sys
 import tempfile
 import urllib.error
 import urllib.request
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from xml.sax.saxutils import escape
 
+DEFAULT_COMMAND_TIMEOUT = 120.0
 PROVIDERS = ('elevenlabs', 'openai', 'azure', 'google', 'command')
 KEYS = {'elevenlabs': ['ELEVENLABS_API_KEY'], 'openai': ['OPENAI_API_KEY'], 'azure': ['AZURE_SPEECH_KEY', 'AZURE_SPEECH_REGION'],
         'google': ['GOOGLE_API_KEY'], 'command': ['SIZZLE_TTS_COMMAND']}
+
+
+def safe_basename(value):
+    """Return value if it is a plain file name; otherwise exit. Rejects separators, absolute paths, '..', empty, NUL."""
+    if not isinstance(value, str) or not value or value in ('.', '..') or '\0' in value \
+            or '/' in value or '\\' in value or value.startswith('~') or Path(value).is_absolute() \
+            or PureWindowsPath(value).is_absolute() or PureWindowsPath(value).drive:
+        raise SystemExit(f'unsafe line id {value!r}: ids must be plain file names (no path separators, \'..\', absolute paths or NUL)')
+    if value != value.strip() or value.endswith('.'):
+        raise SystemExit(f'unsafe line id {value!r}: no leading/trailing whitespace or trailing dot')
+    return value
+
+
+def target_in_dir(out_dir, line_id, fmt, overwrite=True):
+    """Build <out_dir>/<id>.<fmt>, proving the resolved path stays inside out_dir."""
+    safe_basename(line_id)
+    if not fmt or not fmt.isalnum():
+        raise SystemExit(f'unsafe --format {fmt!r}: use a plain extension such as wav or mp3')
+    root = Path(out_dir).resolve()
+    target = (root / f'{line_id}.{fmt}').resolve()
+    if target.parent != root:
+        raise SystemExit(f'line id {line_id!r} resolves outside {root}')
+    if not overwrite and target.exists():
+        raise SystemExit(f'{target} exists and --no-overwrite is set')
+    return target
+
+
+def command_timeout(value=None, env=None):
+    """Seconds allowed for SIZZLE_TTS_COMMAND: explicit value, else SIZZLE_TTS_COMMAND_TIMEOUT, else the default."""
+    raw = value if value is not None else (env if env is not None else os.environ).get('SIZZLE_TTS_COMMAND_TIMEOUT')
+    if raw in (None, ''):
+        return DEFAULT_COMMAND_TIMEOUT
+    try:
+        seconds = float(raw)
+    except (TypeError, ValueError):
+        raise SystemExit(f'invalid command timeout {raw!r}: give a positive number of seconds')
+    if not seconds > 0:
+        raise SystemExit(f'invalid command timeout {raw!r}: give a positive number of seconds')
+    return seconds
 
 
 def post(url, headers, body, timeout=180):
@@ -97,7 +144,11 @@ def synthesize(provider, text, voice, model, style):
             values = {'out': str(out), 'text': text, 'text_file': str(text_file), 'voice': voice or ''}
             argv = [part.format(**values) for part in shlex.split(template)]
             feed = None if ('{text}' in template or '{text_file}' in template) else text.encode()
-            done = subprocess.run(argv, input=feed, capture_output=True)
+            try:
+                done = subprocess.run(argv, input=feed, capture_output=True, timeout=command_timeout())
+            except subprocess.TimeoutExpired:
+                raise SystemExit(f'the TTS command timed out after {command_timeout():g}s and was killed '
+                                 '(raise SIZZLE_TTS_COMMAND_TIMEOUT or --command-timeout if it needs longer)')
             if done.returncode != 0 or not out.exists():
                 raise SystemExit(f'the TTS command failed ({done.returncode}): {done.stderr[-400:].decode("utf-8", "replace")}')
             return out.read_bytes(), out.suffix
@@ -143,15 +194,23 @@ def main():
     ap.add_argument('--style', default='', help='a style instruction (openai) or style name (azure)')
     ap.add_argument('--format', default='wav', help='output extension for --lines (wav or mp3)')
     ap.add_argument('--log')
+    ap.add_argument('--no-overwrite', action='store_true', help='refuse to replace existing output files (default: overwrite)')
+    ap.add_argument('--command-timeout', type=float, default=None,
+                    help='seconds before SIZZLE_TTS_COMMAND is killed (default: SIZZLE_TTS_COMMAND_TIMEOUT or 120)')
     ap.add_argument('--check', action='store_true')
     args = ap.parse_args()
+    if args.command_timeout is not None:
+        os.environ['SIZZLE_TTS_COMMAND_TIMEOUT'] = str(args.command_timeout)
+    command_timeout()
     provider = args.provider.lower()
     if args.check:
         sys.exit(0 if check(provider, args.voice, args.model) else 1)
     if not check(provider, args.voice, args.model):
         sys.exit('Configure the provider in the environment first (see the notes above and tools/README.md).')
     if args.lines:
-        jobs = [(item['id'], item['text'], Path(args.dir) / f"{item['id']}.{args.format}") for item in json.load(open(args.lines))]
+        with open(args.lines, encoding='utf-8') as fh:
+            items = json.load(fh)
+        jobs = [(item['id'], item['text'], target_in_dir(args.dir, item['id'], args.format, not args.no_overwrite)) for item in items]
     elif args.text and args.out:
         jobs = [(Path(args.out).stem, args.text, Path(args.out))]
     else:
@@ -160,6 +219,8 @@ def main():
     for line_id, text, target in jobs:
         for k in range(1, args.takes + 1):
             path = target if args.takes == 1 else target.with_name(f'{target.stem}_t{k}{target.suffix}')
+            if args.no_overwrite and path.exists():
+                sys.exit(f'{path} exists and --no-overwrite is set')
             audio, ext = synthesize(provider, text, args.voice, args.model, args.style)
             write(audio, ext, path)
             entry = {'time': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds'), 'provider': provider,

@@ -87,7 +87,7 @@ python3 tools/tts.py "Fridays, the library stays open late." takes/L1.wav --take
 python3 tools/tts.py --lines edit/lines.json --dir takes/ --takes 4   # [{"id": "L1", "text": "..."}]
 ```
 
-For `command`, `SIZZLE_TTS_COMMAND` is a command line with `{out}` and, optionally, `{text}`, `{text_file}` and `{voice}`. It runs without a shell. Without `{text}` or `{text_file}`, the text goes to standard input. `SIZZLE_TTS_COMMAND_EXT` names the format it writes (default `.wav`). For example:
+For `command`, `SIZZLE_TTS_COMMAND` is a command line with `{out}` and, optionally, `{text}`, `{text_file}` and `{voice}`. It runs without a shell. Without `{text}` or `{text_file}`, the text goes to standard input. `SIZZLE_TTS_COMMAND_EXT` names the format it writes (default `.wav`). **`SIZZLE_TTS_COMMAND` is trusted configuration:** it runs on your machine with your privileges, so set it only in your own environment, never from a project file, a script someone sent you, or text you did not write. The command is killed after `SIZZLE_TTS_COMMAND_TIMEOUT` seconds (default 120; `--command-timeout` overrides). For example:
 
 ```sh
 SIZZLE_TTS_COMMAND='say -v {voice} -f {text_file} -o {out}' SIZZLE_TTS_COMMAND_EXT=.aiff   # macOS
@@ -95,6 +95,8 @@ SIZZLE_TTS_COMMAND='espeak-ng -v {voice} -f {text_file} -w {out}'               
 SIZZLE_TTS_COMMAND='piper --model {voice} --output_file {out}'                              # Piper, text on stdin
 SIZZLE_TTS_COMMAND='aws polly synthesize-speech --engine neural --output-format mp3 --voice-id {voice} --text {text} {out}' SIZZLE_TTS_COMMAND_EXT=.mp3
 ```
+
+With `--lines`, each `id` becomes a file name inside `--dir`, so it must be a plain name: ids containing `/`, `\`, `..`, an absolute path or a NUL byte are refused before any request is made. Existing files are overwritten by default; pass `--no-overwrite` to refuse instead.
 
 Each take is one request, and the tool never retries on its own: a repeated request spends credits again. A provider that returns the same audio for the same text gives one distinct take, so vary the punctuation or the style instead. Every request is appended to `generation-log.jsonl` beside the output (or `--log`), without the key.
 

@@ -8,3 +8,17 @@
 - Write in American English, in plain words, with no em dashes and no hype. Use no client names, real people's names, email addresses, home directory paths or keys anywhere. Screenshots show only the product page, without metadata.
 - Run `python3 scripts/build.py`, `python3 scripts/check.py` and `node --check site/site.js`, and inspect desktop and phone layouts after UI changes.
 - Do not add a remote, push, publish, deploy or contact anyone unless asked.
+
+## Market research upkeep
+
+Local-only market research lives in `.research/market/` (gitignored; never commit it).
+
+At session start, check `.research/market/last_updated`:
+- If the file is missing, seed it from this repository's README and capability source/provenance links, using cited primary sources and local retrieval dates.
+- If it is older than 30 days, or before any positioning, launch or naming work, refresh it with cited primary sources (URL + retrieved date).
+- Keep it local. Never commit it and never copy private research into public docs.
+- Log every change in `.research/market/CHANGELOG.md`.
+
+## Capability identity
+
+Public capability identity: `amplifier-capability-sizzle`. Preserve the existing portable method folder, native interfaces and legacy installation routes across the approved repository rename.
