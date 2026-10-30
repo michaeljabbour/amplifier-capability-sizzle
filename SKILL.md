@@ -1,8 +1,8 @@
 ---
 name: "sizzle"
-description: "Direct and produce a 15 to 90 s kinetic-typography brand film (sizzle reel, teaser, launch film or event opener) with narration, score and cut-downs, from an outline, deck, site, template or photos. Use when asked for a sizzle, a teaser, a brand or launch video, or an event opener. Stops for a person to approve the storyboard before generating anything."
+description: "Direct and produce a 15 to 90 s kinetic-typography brand film (sizzle reel, teaser, launch film or event opener) with narration, score and cut-downs, from an outline, deck, site, template or photos. Use when asked for a sizzle, a teaser, a brand or launch video, a narrated product demo, or an event opener; not for a single clip or image. Stops for a person to approve the storyboard before generating any media. Ships local command-line checks for layout, motion, voice, mix and speech recognition, and a text-to-speech adapter that sends script lines only to the provider the user configures."
 license: "MIT"
-compatibility: "Needs Node.js with Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper for the build and the checks. Voice needs a text-to-speech provider key or a local engine."
+compatibility: "Needs Node.js with Playwright, ffmpeg and ffprobe, and Python with numpy, scipy, soundfile, librosa, pyloudnorm and faster-whisper for the build and the checks. Voice needs a text-to-speech provider key or a local engine. Network use is limited to the voice, music and sound providers the user configures; keys are read from environment variables and never printed."
 user-invocable: true
 metadata:
   version: "0.1.1"
@@ -477,7 +477,7 @@ Diagnose with measurement, fix the cause, and report before and after numbers. T
 - Capitals and ellipses in voice text, or a key word left last in its phrase, where the voice lets it go.
 - Wipes and irises that double-expose the outgoing scene.
 - Enlarging small photos, or sharpening faces with AI; a supplied graphic dropped in as a hard cut.
-- Reviewing frames you never saw, or trusting a describing model without checking it against the pixels.
+- Reviewing frames you never saw, or trusting a describing model before checking it against the pixels.
 - Re-running a step from an older copy of the work.
 - Asking for, or keeping, an API key in chat.
 - Copy-check fixes that add labels or drain the metaphor.

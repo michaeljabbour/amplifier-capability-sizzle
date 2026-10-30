@@ -1,0 +1,58 @@
+# Reviewed SkillSpector findings for the installed skill package, static analysis only.
+# Regenerate after a tool or scanner change, then review every reason. See docs/VALIDATION.md.
+version: 2
+scanner_version: 2.12.0
+rules: []
+fingerprints:
+- hash: sha256:3c5c9ca0ff26a85759b25e63518b0714d1212fc926144f59e2a9b48729592aad
+  rule_id: AST4
+  file: tools/asr_check.py
+  reason: "Runs ffmpeg with an argument list and no shell, to decode the film the user names."
+- hash: sha256:2a5008004121ca6ef79ef6ce6fb7dd81264b9ce173661051b8aa42f2cbe15a75
+  rule_id: AST4
+  file: tools/pops.py
+  reason: "Runs ffprobe and ffmpeg with an argument list and no shell, on the film the user names."
+- hash: sha256:517bc9c7110c6aa21b8fbb534619012c1754be5c0da95214f8d0c258605ff1d5
+  rule_id: AST4
+  file: tools/pops.py
+  reason: "Runs ffprobe and ffmpeg with an argument list and no shell, on the film the user names."
+- hash: sha256:9e0d869cbb13289431d4452a973ff71847bb004b26d741ffc1be222a6b929316
+  rule_id: AST4
+  file: tools/pops.py
+  reason: "Runs ffprobe and ffmpeg with an argument list and no shell, on the film the user names."
+- hash: sha256:10af5f66afd3c7c9c01d7456ad126b226ff4f161d7723ec1fd3dd26b7351c236
+  rule_id: AST4
+  file: tools/tts.py
+  reason: "Runs ffmpeg, or the local voice engine the user sets in SIZZLE_TTS_COMMAND, as an argument list with no shell. The command comes only from the user's own environment."
+- hash: sha256:08a11e5a2e58981678c19dc5e4fcf9a155a5104c2f20e42f6eab4606e86b6dde
+  rule_id: AST4
+  file: tools/tts.py
+  reason: "Runs ffmpeg, or the local voice engine the user sets in SIZZLE_TTS_COMMAND, as an argument list with no shell. The command comes only from the user's own environment."
+- hash: sha256:8371df8c41b764f8b85e56cbbf8d2a9b33a790c8a59934ea15e97bc1f9c5ba87
+  rule_id: TT2
+  file: tools/tts.py
+  reason: "Appends to the generation log at the path the user gives (default beside the output); it records the request without the key."
+- hash: sha256:57164ed1fe6423fe4e60ac62bcb34606c13c4f036a3e7ad2933913329e677d2a
+  rule_id: LP3
+  file: SKILL.md
+  reason: "Agent Skills has no permission ceiling to declare, and allowed-tools would only preapprove tools. The compatibility field states the tools and the network use instead."
+- hash: sha256:5e112914d58996e969a8edc0d3f2aa386504f4cfa29faf5215aaea77043ae989
+  rule_id: E1
+  file: tools/tts.py
+  reason: "Calls only the documented endpoint of the voice provider the user configures, sending the script line; keys come from environment variables and are never printed or logged."
+- hash: sha256:a9be431cefc299b2b68867575540dd4eefe14d31df20a950915585dab6861855
+  rule_id: AE1
+  file: SKILL.md
+  reason: "Scanner limitation: its static parser stops at a function call inside a template-literal expression, such as ${held.toFixed(2)}, which is valid JavaScript. tools/lint.mjs and tools/motion.mjs are reviewed by hand."
+- hash: sha256:295f67afb1aba69ac035383c965c434a90f16b17a6d471a606d602ea8f83f372
+  rule_id: AE1
+  file: SKILL.md
+  reason: "Scanner limitation: its static parser stops at a function call inside a template-literal expression, such as ${held.toFixed(2)}, which is valid JavaScript. tools/lint.mjs and tools/motion.mjs are reviewed by hand."
+- hash: sha256:ff8f304e8e662aee52b946587611c52d527d1c6884e543a54dfd1c2bf7a8305c
+  rule_id: AE1
+  file: SKILL.md
+  reason: "Scanner limitation: its static parser stops at a function call inside a template-literal expression, such as ${held.toFixed(2)}, which is valid JavaScript. tools/lint.mjs and tools/motion.mjs are reviewed by hand."
+- hash: sha256:ad45c2fe69fb2b6f28a2ca420eae5b8aa9049e17036eeda3265a4f9049a2199c
+  rule_id: AE1
+  file: SKILL.md
+  reason: "Scanner limitation: its static parser stops at a function call inside a template-literal expression, such as ${held.toFixed(2)}, which is valid JavaScript. tools/lint.mjs and tools/motion.mjs are reviewed by hand."

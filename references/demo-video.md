@@ -26,16 +26,17 @@ Use the newest version of each. Look them up at the start of a video instead of 
 
 ```bash
 npm view hyperframes version                     # newest HyperFrames
-npx --yes hyperframes skills update              # refresh the HyperFrames skills
 curl -s "https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000" \
   -H "x-goog-api-key: $GEMINI_API_KEY" | jq -r '.models[].name' | grep -Ei 'tts|lyria|flash' | sort -V
 ```
+
+Pin HyperFrames per video instead of fetching it on every run: install the version you looked up into the video folder with an exact version (step 5), so its lockfile records the version and its hash, and run it with `npx --no-install`, which never downloads. Move to a newer version on purpose, by installing it, never by accident.
 
 Pick the newest TTS, Lyria and Flash model from the list, read each model's page in the Gemini API docs for changes to the request shape, and record the IDs in SCRIPT.md `## Audio`. Use the newest English faster-whisper models.
 
 All Google calls read `GEMINI_API_KEY` from the environment. Never print or log it, and never retry a paid request automatically. Try the API before you tell the user to use a web UI.
 
-Before writing compositions, load the HyperFrames skills: `hyperframes` first, then `hyperframes-cli`, `hyperframes-registry` and `media-use` as needed. Install them from `heygen-com/hyperframes` (path `skills/<name>`) if they are missing.
+Before writing compositions, load the HyperFrames skills: `hyperframes` first, then `hyperframes-cli`, `hyperframes-registry` and `media-use` as needed. Install them from `heygen-com/hyperframes` (path `skills/<name>`) if they are missing, and refresh them with `npx --no-install hyperframes skills update` once the video's HyperFrames is installed.
 
 **Sizzle's own tools that apply here** (commands in `tools/README.md`):
 
@@ -52,6 +53,7 @@ Before writing compositions, load the HyperFrames skills: `hyperframes` first, t
   tmp/                          scratch: frame grabs, voice auditions, clones (gitignored)
   YYYY-MM-DD-<product>-video/
     AGENTS.md                   video-specific rules, e.g. the export filename
+    package.json, package-lock.json   the pinned HyperFrames version (node_modules/ gitignored)
     SCRIPT.md                   the source of truth for story, narration, on-screen text, audio
     .gitignore                  raw recordings and large reference MP4s
     references/                 quality bar and messaging: stills, films, decks, prior scripts
@@ -128,12 +130,14 @@ Concept art from an image model is optional and comes after approval. Keep it fl
 
 ```bash
 cd YYYY-MM-DD-<product>-video
-npx --yes hyperframes@latest init video --example blank --non-interactive --skip-skills
+npm init -y
+npm install --save-dev --save-exact hyperframes@<version>   # the version you looked up
+npx --no-install hyperframes init video --example blank --non-interactive --skip-skills
 ```
 
 Then:
 
-- To move an existing project to a newer HyperFrames: `npx --yes hyperframes@latest upgrade --project .`
+- To move an existing project to a newer HyperFrames, install that version the same way, then run `npx --no-install hyperframes upgrade --project .`
 - Copy `video/.gitignore`, `assets/fonts/` and `assets/sfx/` from the newest earlier video, if any. Fonts are licensed files: never publish them.
 
 ### 6. Build the first scenes, then stop
@@ -175,8 +179,8 @@ Cut footage at regular speed; do not speed it up a lot. Label what is on screen 
 After every change:
 
 ```bash
-npx --yes hyperframes check --json            # 0 errors before you reply
-npx --yes hyperframes snapshot --at 3.2,7.5   # look at the frames you changed
+npx --no-install hyperframes check --json            # 0 errors before you reply
+npx --no-install hyperframes snapshot --at 3.2,7.5   # look at the frames you changed
 ```
 
 Read the PNGs, fix what you see, then give the user the Studio URL (`http://localhost:3002/#project/video`). Keep one preview running with `preview --background`. Studio updates live: do not render an MP4 for review.
@@ -196,7 +200,7 @@ Then offer a cleanup pass: gitignore or delete unused takes, options and artifac
 Two agents often edit the same `video/` at once.
 
 - "Insert and shift. Do not let the other ongoing work distract you, but do not intentionally break it."
-- Run `npx --yes hyperframes history --limit 10` before editing. "Changed outside the app" means the other agent.
+- Run `npx --no-install hyperframes history --limit 10` before editing. "Changed outside the app" means the other agent.
 - Never edit files, music or scenes the other agent owns. When you add a scene, shift the later ones and refit music and SFX to the new root duration.
 
 ## Audience and content rules
