@@ -95,3 +95,7 @@ MIT; see [LICENSE](LICENSE). The family theme snapshot keeps its own [MIT notice
 Direct the film before generating it, then check the picture and sound.
 
 Read the [installation guide](docs/INSTALL.md) for the supported local path and [consolidation record](docs/CONSOLIDATION.md) for ownership and evidence limits. Canonical catalog name: **Sizzle**; repository: `amplifier-skill-sizzle`.
+
+## Repository migration
+
+This repository was renamed from `amplifier-skill-sizzle` to `amplifier-capability-sizzle`. Existing installed method names, bundle aliases and native interfaces stay the same. See the [migration guide](https://michaeljabbour.github.io/migration/) and [repository map](https://michaeljabbour.github.io/migration/mapping.json) for source URL updates.
