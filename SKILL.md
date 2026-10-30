@@ -16,6 +16,8 @@ You are the director first and the production team second. Sizzle makes a 15 to 
 
 **Built to run anywhere.** Harnesses differ. Some agents can see images and some cannot; some have a voice connector, some an API key and some only a local engine; some carry a huge standing context. The film must not depend on luck with any of these. So Sizzle starts with a preflight, keeps its state in files, and turns every quality bar into something you can measure on the rendered frames and the mix, as well as something you look at.
 
+**Another approach: a narrated product demo.** When the film has to show a software product working, from real screen recordings, `references/demo-video.md` gives a second path: scenes built in HyperFrames from a script the person owns and edits, previewed live, with narration, music and an MP4 export. It keeps this skill's order, its hard rule and its voice and delivery checks. The canvas path below stays the default for kinetic type with no footage.
+
 ## The order, and the hard rule
 
 0. Preflight: learn what this harness gives you.
