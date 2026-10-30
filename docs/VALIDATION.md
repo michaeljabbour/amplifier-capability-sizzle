@@ -27,6 +27,15 @@ The integrity check covers local HTML links and fragments, shipped Markdown dest
 - `asr_check.py` on the same film recognized 92 of 93 scripted words (98.9 per cent); the one miss was a name spelled differently, which a variants file covers. `voice_words.py` flagged the one breathy word the earlier measurements found, passed the emphasis word, and drew the spectrogram with the pitch track and word marks.
 - `tts.py`: the `command` provider voiced lines with a local engine (ffmpeg's flite), wrote two takes and converted to MP3. Each HTTP provider (ElevenLabs, OpenAI, Azure, Google) was pointed at a local stand-in that accepted a request only with the right path, key header and body; all four were accepted, a wrong key produced a clear refusal with no retry, special characters were escaped in the Azure SSML, and the generation logs contained no keys. The live services were not called.
 
+## Security scan
+
+`make scan` installs the skill package into `.work/scan/` and runs [SkillSpector](https://github.com/NVIDIA/skillspector) on it with static analysis only, against the reviewed baseline in `.skillspector-baseline.yaml`. Scan the package, not the repository: the repository also holds `.git/`, the built site, the films and local caches, none of which a user installs, and they made up most of the findings when the whole folder was scanned.
+
+- Result: 0 of 100, severity low, recommendation "caution" (SkillSpector 2.12.0). The caution is coverage: the scanner's parser stops at a function call inside a template-literal expression, so it inspects `tools/lint.mjs` and `tools/motion.mjs` only in part.
+- Fixed: the description now names the checks the skill ships and where voice text is sent, and that it stops before generating any media; `references/demo-video.md` pins HyperFrames per video in a lockfile and runs it with `npx --no-install`, instead of fetching an unpinned version on each run.
+- Accepted, each with its reason in the baseline: `subprocess` calls that pass an argument list with no shell; `tts.py` calling the voice provider the user configures, and running the local engine the user names in `SIZZLE_TTS_COMMAND`; the append-only generation log; and no `allowed-tools` field, which would only preapprove tools.
+- Not run here: the scanner's LLM analyzers, which send the files to a model provider. A run with them reported description and behavior mismatches for the tools, which the new description answers, and English-only defaults in `asr_check.py` and `voice_words.py`, which are a limitation rather than a risk.
+
 ## Screenshots
 
 The images show only the product page. They exclude browser chrome, addresses, desktop content and private files, and carry no metadata.
