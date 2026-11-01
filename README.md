@@ -1,6 +1,6 @@
 # Sizzle
 
-[Open the guide, watch an audit and get the skill](https://michaeljabbour.github.io/amplifier-skill-sizzle/).
+[Open the guide, watch an audit and get the skill](https://michaeljabbour.github.io/amplifier-capability-sizzle/).
 
 A skill that helps agents direct and produce short kinetic brand films: 15 to 90 seconds of type, one visual motif, a narrator and a score on one timeline, with captions and a 15-second cut. It makes the creative decisions before anything is generated, then measures the work on every frame and in the mix. It does not replace a person's eyes and ears; it gets the film to them in better shape.
 
@@ -13,8 +13,8 @@ This project pairs the reusable [`sizzle` skill](SKILL.md) with its [tools](tool
 Bring the audience, one proposition, source assets and a length. Start with a storyboard you can approve; production follows only after that approval and the creative gate.
 
 ```sh
-git clone https://github.com/michaeljabbour/amplifier-skill-sizzle.git
-cd amplifier-skill-sizzle
+git clone https://github.com/michaeljabbour/amplifier-capability-sizzle.git
+cd amplifier-capability-sizzle
 python3 scripts/capability.py install --dest ~/.agents/skills
 ```
 
@@ -94,7 +94,7 @@ MIT; see [LICENSE](LICENSE). The family theme snapshot keeps its own [MIT notice
 
 Direct the film before generating it, then check the picture and sound.
 
-Read the [installation guide](docs/INSTALL.md) for the supported local path and [consolidation record](docs/CONSOLIDATION.md) for ownership and evidence limits. Canonical catalog name: **Sizzle**; repository: `amplifier-skill-sizzle`.
+Read the [installation guide](docs/INSTALL.md) for the supported local path and [consolidation record](docs/CONSOLIDATION.md) for ownership and evidence limits. Canonical catalog name: **Sizzle**; repository: `amplifier-capability-sizzle`.
 
 ## Repository migration
 

@@ -38,4 +38,4 @@ Open `http://127.0.0.1:8000`. The build uses only Python's standard library. The
 
 The Pages source is GitHub Actions. The workflow separates build and deployment, checks the output before upload, and uploads only `_site/`. Deployment gets `pages: write` and `id-token: write`; the build has read access only. No project secrets or backend services are needed. Official GitHub action revisions are pinned to fixed commits. Pushes to `main` rebuild and redeploy the site, and manual runs are available from Actions.
 
-The live URL is <https://michaeljabbour.github.io/amplifier-skill-sizzle/>. Keep asset, navigation and download paths relative so repository-subpath hosting works.
+The live URL is <https://michaeljabbour.github.io/amplifier-capability-sizzle/>. Keep asset, navigation and download paths relative so repository-subpath hosting works.
