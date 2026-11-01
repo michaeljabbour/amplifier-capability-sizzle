@@ -488,3 +488,7 @@ Diagnose with measurement, fix the cause, and report before and after numbers. T
 - **Spelling:** British or American to match the client.
 - **Your own copy:** no em dashes (quote the client's copy as it stands), and no superlatives or hype.
 - **The README:** state what changed in answer to each note, then the thinking, then the open items, with numbers wherever a claim can be measured.
+
+## Optional coaching checkpoint
+
+Read [the local coaching guide](references/coaching-session.v1.md) only when the person asks for practice or optional session bookkeeping. Keep direct artifact production available; agree a small budget, preserve the baseline and stop on goal, user exit or no meaningful gain.

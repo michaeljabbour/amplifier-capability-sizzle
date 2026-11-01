@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased: optional coaching checkpoint
+
+- Add a self-contained opt-in practice/review guide with a fictional task, preserved baseline, explicit scope/budget, user stop, reviewed keep/revert and private-by-choice records. Keep native operations, existing method budgets and evidence rules unchanged; no human efficacy or outside-use result is claimed.
+
 ## 2026-10-28: Public first use
 
 - Add a complete public clone/install path beside the first useful outcome, with prerequisites, safe updates and a full-folder ZIP alternative. Preserve the existing method, films and interactive examples.
