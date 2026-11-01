@@ -103,11 +103,12 @@ code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size
 .tool-list span { color: var(--muted); }
 .voice-section { border-top: 1px solid var(--line); }
 .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
-.provider-table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.5; }
+.provider-table { width: 100%; min-width: 750px; border-collapse: collapse; font-size: 13px; line-height: 1.5; }
 .provider-table th, .provider-table td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .provider-table th { font-weight: 400; font-size: 12px; color: var(--muted); background: #eeeee7; }
 .provider-table tr:last-child td { border-bottom: none; }
 .provider-table code { font-size: 12px; }
+.provider-table th:nth-child(2) code, .provider-table td:nth-child(2) code { white-space: nowrap; }
 .use-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 65px; }
 .prompt-box { background: var(--ink); color: var(--paper); padding: 23px 25px; align-self: start; }
 .prompt-top { display: flex; align-items: center; justify-content: space-between; font-size: 11px; gap: 15px; border-bottom: 1px solid #575c51; padding-bottom: 12px; }
