@@ -15,8 +15,10 @@ Configuration comes from the environment, never from files in the project:
                           your own environment, never from project files or text you did not write.
     SIZZLE_TTS_COMMAND_TIMEOUT  seconds before the command is killed (default 120; --command-timeout overrides)
     SIZZLE_TTS_COMMAND_EXT  the format that command writes, as an extension (default .wav; .aiff for macOS say)
-Keys: ELEVENLABS_API_KEY; OPENAI_API_KEY (OPENAI_BASE_URL for a compatible endpoint); AZURE_SPEECH_KEY with
-AZURE_SPEECH_REGION; GOOGLE_API_KEY. Flags override the variables. Keys are never printed or logged.
+Keys: ELEVENLABS_API_KEY; OPENAI_API_KEY; AZURE_SPEECH_KEY with AZURE_SPEECH_REGION; GOOGLE_API_KEY.
+These keys are used only at their provider's default HTTPS origin. Custom endpoints use SIZZLE_TTS_API_KEY
+explicitly, without falling back to the provider key. HTTPS is required except for literal loopback IPs or
+localhost. Redirects are refused. Flags override the variables. Keys are never printed or logged.
 
 Each take is one paid request: there are no automatic retries. Providers that return the same audio for the
 same text give one distinct take; vary the punctuation or --style instead. Every request is appended to a
@@ -30,14 +32,19 @@ files are overwritten by default (as before); pass --no-overwrite to refuse inst
 import argparse
 import base64
 import datetime
+import http.client
+import ipaddress
 import json
 import os
+import re
 import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
+import unicodedata
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path, PureWindowsPath
 from xml.sax.saxutils import escape
@@ -87,51 +94,155 @@ def command_timeout(value=None, env=None):
     return seconds
 
 
-def post(url, headers, body, timeout=180):
-    request = urllib.request.Request(url, data=body, headers=headers, method='POST')
+def loopback_host(host):
+    if host == 'localhost':
+        return True
     try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
+        return '%' not in host and ipaddress.ip_address(host).is_loopback
+    except ValueError:
+        return False
+
+
+def endpoint_parts(url):
+    """Validate before urllib can normalize unsafe input; never echo the URL."""
+    if not isinstance(url, str) or not url or '\\' in url \
+            or any(c.isspace() or unicodedata.category(c) in ('Cc', 'Cf', 'Cs') for c in url):
+        raise SystemExit('Invalid TTS endpoint URL; use HTTPS or loopback HTTP.')
+    try:
+        decoded = urllib.parse.unquote(url)
+        if any(unicodedata.category(c) in ('Cc', 'Cf', 'Cs') for c in decoded):
+            raise ValueError('encoded control')
+        parts = urllib.parse.urlsplit(url)
+        host, port = parts.hostname, parts.port
+        if parts.scheme not in ('https', 'http') or not host or parts.fragment \
+                or parts.username is not None or parts.password is not None \
+                or '%' in host or parts.netloc.endswith(':') \
+                or (parts.netloc.startswith('[') and not re.fullmatch(r'\[[^\]]+\](?::[0-9]+)?', parts.netloc)) \
+                or (port is not None and not 1 <= port <= 65535):
+            raise ValueError('invalid endpoint')
+        if parts.scheme == 'http' and not loopback_host(host):
+            raise ValueError('non-loopback HTTP')
+    except (ValueError, UnicodeError):
+        raise SystemExit('Invalid TTS endpoint URL; use HTTPS or loopback HTTP without userinfo or fragments.') from None
+    return parts
+
+
+def provider_endpoint(provider, voice):
+    env = os.environ
+    if provider == 'elevenlabs':
+        base = env.get('ELEVENLABS_BASE_URL', 'https://api.elevenlabs.io').rstrip('/')
+        endpoint_parts(base)
+        if urllib.parse.urlsplit(base).query:
+            raise SystemExit('The ElevenLabs base URL must not contain a query.')
+        url = f'{base}/v1/text-to-speech/{urllib.parse.quote(voice, safe="")}?output_format=mp3_44100_128'
+    elif provider == 'openai':
+        base = env.get('OPENAI_BASE_URL', 'https://api.openai.com/v1').rstrip('/')
+        endpoint_parts(base)
+        if urllib.parse.urlsplit(base).query:
+            raise SystemExit('The OpenAI base URL must not contain a query.')
+        url = f'{base}/audio/speech'
+    elif provider == 'azure':
+        url = env.get('AZURE_SPEECH_ENDPOINT')
+        if not url:
+            region = env.get('AZURE_SPEECH_REGION', '')
+            if not re.fullmatch(r'[a-zA-Z0-9-]+', region):
+                raise SystemExit('Set a valid AZURE_SPEECH_REGION or an explicit speech endpoint.')
+            url = f'https://{region}.tts.speech.microsoft.com/cognitiveservices/v1'
+    elif provider == 'google':
+        url = env.get('GOOGLE_TTS_ENDPOINT', 'https://texttospeech.googleapis.com/v1/text:synthesize')
+    else:
+        raise SystemExit('No network endpoint for this TTS provider.')
+    endpoint_parts(url)
+    return url
+
+
+def endpoint_key_name(provider, url):
+    """An ambient provider key belongs only to its exact default HTTPS origin."""
+    parts = endpoint_parts(url)
+    hosts = {'elevenlabs': 'api.elevenlabs.io', 'openai': 'api.openai.com',
+             'google': 'texttospeech.googleapis.com'}
+    region = os.environ.get('AZURE_SPEECH_REGION', '')
+    if re.fullmatch(r'[a-zA-Z0-9-]+', region):
+        hosts['azure'] = f'{region.lower()}.tts.speech.microsoft.com'
+    if parts.scheme == 'https' and (parts.port or 443) == 443 and parts.hostname == hosts.get(provider):
+        return KEYS[provider][0]
+    return 'SIZZLE_TTS_API_KEY'
+
+
+def endpoint_key(provider, url):
+    name = endpoint_key_name(provider, url)
+    key = os.environ.get(name, '')
+    if not key or any(ord(c) < 33 or ord(c) > 126 for c in key):
+        if name == 'SIZZLE_TTS_API_KEY':
+            raise SystemExit('A custom TTS origin requires an explicit SIZZLE_TTS_API_KEY; provider keys are not forwarded.')
+        raise SystemExit(f'Set a valid {name} in the environment.')
+    return key
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    """A redirected paid POST must not replay its body or credential headers."""
+    def http_error_302(self, req, fp, code, msg, headers):
+        fp.close()
+        raise SystemExit(f'TTS redirect refused (HTTP {code}); configure the final endpoint explicitly.')
+
+    http_error_301 = http_error_303 = http_error_307 = http_error_308 = http_error_302
+
+
+def post(url, headers, body, timeout=180):
+    parts = endpoint_parts(url)
+    try:
+        request = urllib.request.Request(url, data=body, headers=headers, method='POST')
+        handlers = [NoRedirect()]
+        if loopback_host(parts.hostname):
+            handlers.append(urllib.request.ProxyHandler({}))
+        opener = urllib.request.build_opener(*handlers)
+        with opener.open(request, timeout=timeout) as response:
             return response.read()
     except urllib.error.HTTPError as error:
-        detail = error.read()[:400].decode('utf-8', 'replace')
-        raise SystemExit(f'{url.split("?")[0]} answered {error.code}: {detail}')
+        try:
+            error.close()
+        except (OSError, ValueError, http.client.HTTPException):
+            pass
+        raise SystemExit(f'TTS provider returned HTTP {error.code}; response details are omitted.') from None
+    except (urllib.error.URLError, OSError, ValueError, UnicodeError, http.client.HTTPException):
+        raise SystemExit('TTS request failed; check the provider connection and endpoint configuration.') from None
 
 
 def synthesize(provider, text, voice, model, style):
     """Return (audio bytes, file extension) from one request."""
     env = os.environ
     if provider == 'elevenlabs':
-        base = env.get('ELEVENLABS_BASE_URL', 'https://api.elevenlabs.io')
+        url = provider_endpoint(provider, voice)
         body = {'text': text, 'model_id': model or 'eleven_multilingual_v2'}
-        audio = post(f'{base}/v1/text-to-speech/{voice}?output_format=mp3_44100_128',
-                     {'xi-api-key': env['ELEVENLABS_API_KEY'], 'Content-Type': 'application/json', 'Accept': 'audio/mpeg'},
+        audio = post(url,
+                     {'xi-api-key': endpoint_key(provider, url), 'Content-Type': 'application/json', 'Accept': 'audio/mpeg'},
                      json.dumps(body).encode())
         return audio, '.mp3'
     if provider == 'openai':
-        base = env.get('OPENAI_BASE_URL', 'https://api.openai.com/v1').rstrip('/')
+        url = provider_endpoint(provider, voice)
         body = {'model': model or 'gpt-4o-mini-tts', 'voice': voice, 'input': text, 'response_format': 'wav'}
         if style:
             body['instructions'] = style
-        audio = post(f'{base}/audio/speech', {'Authorization': f'Bearer {env["OPENAI_API_KEY"]}', 'Content-Type': 'application/json'},
+        audio = post(url, {'Authorization': f'Bearer {endpoint_key(provider, url)}', 'Content-Type': 'application/json'},
                      json.dumps(body).encode())
         return audio, '.wav'
     if provider == 'azure':
-        url = env.get('AZURE_SPEECH_ENDPOINT') or f'https://{env["AZURE_SPEECH_REGION"]}.tts.speech.microsoft.com/cognitiveservices/v1'
+        url = provider_endpoint(provider, voice)
         lang = '-'.join(voice.split('-')[:2]) if voice.count('-') >= 2 else 'en-US'
         inner = escape(text)
         if style:
             inner = f'<mstts:express-as style="{escape(style)}">{inner}</mstts:express-as>'
         ssml = (f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" '
                 f'xml:lang="{lang}"><voice name="{escape(voice)}">{inner}</voice></speak>')
-        audio = post(url, {'Ocp-Apim-Subscription-Key': env['AZURE_SPEECH_KEY'], 'Content-Type': 'application/ssml+xml',
+        audio = post(url, {'Ocp-Apim-Subscription-Key': endpoint_key(provider, url), 'Content-Type': 'application/ssml+xml',
                            'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm', 'User-Agent': 'sizzle-tts'}, ssml.encode())
         return audio, '.wav'
     if provider == 'google':
-        base = env.get('GOOGLE_TTS_ENDPOINT', 'https://texttospeech.googleapis.com/v1/text:synthesize')
+        url = provider_endpoint(provider, voice)
         lang = '-'.join(voice.split('-')[:2]) if voice.count('-') >= 2 else 'en-US'
         body = {'input': {'text': text}, 'voice': {'languageCode': lang, 'name': voice},
                 'audioConfig': {'audioEncoding': 'LINEAR16', 'sampleRateHertz': 24000}}
-        reply = post(base, {'X-Goog-Api-Key': env['GOOGLE_API_KEY'], 'Content-Type': 'application/json'}, json.dumps(body).encode())
+        reply = post(url, {'X-Goog-Api-Key': endpoint_key(provider, url), 'Content-Type': 'application/json'}, json.dumps(body).encode())
         return base64.b64decode(json.loads(reply)['audioContent']), '.wav'
     if provider == 'command':
         template = env['SIZZLE_TTS_COMMAND']
@@ -173,10 +284,25 @@ def check(provider, voice, model):
     print(f'voice:    {voice or "not set (SIZZLE_TTS_VOICE)"}')
     print(f'model:    {model or "provider default"}')
     ready = bool(provider in PROVIDERS and (voice or provider == 'command'))
-    for name in KEYS.get(provider, []):
+    required = KEYS.get(provider, [])
+    if provider in PROVIDERS and provider != 'command':
+        try:
+            url = provider_endpoint(provider, voice or 'check')
+            required = [endpoint_key_name(provider, url)]
+        except SystemExit as error:
+            print(str(error))
+            ready = False
+            required = []
+    for name in required:
         present = bool(os.environ.get(name))
         ready &= present
         print(f'{name}: {"set" if present else "missing"}')
+    if ready and provider != 'command':
+        try:
+            endpoint_key(provider, url)
+        except SystemExit:
+            print('key: invalid configuration')
+            ready = False
     print('ready' if ready else 'not ready')
     return ready
 

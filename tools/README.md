@@ -74,12 +74,16 @@ The text-to-speech provider is the user's choice. Set it in the environment the 
 | Provider | `SIZZLE_TTS_PROVIDER` | Keys | `SIZZLE_TTS_VOICE` |
 | --- | --- | --- | --- |
 | ElevenLabs | `elevenlabs` | `ELEVENLABS_API_KEY` | a voice ID |
-| OpenAI, or a compatible endpoint | `openai` | `OPENAI_API_KEY`; `OPENAI_BASE_URL` for another endpoint | a voice name |
+| OpenAI, or a compatible endpoint | `openai` | `OPENAI_API_KEY` for the default origin; `SIZZLE_TTS_API_KEY` with a custom `OPENAI_BASE_URL` | a voice name |
 | Azure AI Speech | `azure` | `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` | a voice name such as `en-US-AvaMultilingualNeural` |
 | Google Cloud Text-to-Speech | `google` | `GOOGLE_API_KEY` | a voice name such as `en-US-Chirp3-HD-Aoede` |
 | Any local engine or command line | `command` | `SIZZLE_TTS_COMMAND` | whatever the command expects |
 
 `SIZZLE_TTS_MODEL` picks a model where the provider has one. `--style` passes a style instruction to OpenAI or a style name to Azure.
+
+Network endpoints must use HTTPS, except that HTTP is allowed for a literal loopback IP or `localhost`. Userinfo, fragments, control characters and redirects are refused. A paid POST is never replayed at a redirect; configure the final endpoint instead. Provider failures report a status or a generic connection message, without response bodies, URLs, query values or exception details.
+
+The standard provider key is used only at its default HTTPS origin on port 443: `api.elevenlabs.io`, `api.openai.com`, the configured region's `tts.speech.microsoft.com` host, or `texttospeech.googleapis.com`. A different host, port or loopback service requires `SIZZLE_TTS_API_KEY` explicitly. There is no fallback to an ambient provider key. This applies to `ELEVENLABS_BASE_URL`, `OPENAI_BASE_URL`, `AZURE_SPEECH_ENDPOINT` and `GOOGLE_TTS_ENDPOINT` overrides. Existing custom-endpoint users must configure their chosen service's key under `SIZZLE_TTS_API_KEY`; default-provider users keep the existing key variables. A custom Azure endpoint does not require a region unless it uses the default regional origin. Keys stay in the environment and are never printed.
 
 ```sh
 python3 tools/tts.py --check                                    # what is set; never prints a key

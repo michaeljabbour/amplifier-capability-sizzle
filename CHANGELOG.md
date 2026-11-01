@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased: TTS endpoint and error boundaries
+
+- Require HTTPS except for literal loopback or localhost services, reject malformed endpoint authorities, and refuse redirects before a paid request can be replayed or credential headers forwarded. Loopback requests bypass proxy settings for that request only.
+- Keep provider keys at the exact default HTTPS origin on port 443. Custom endpoints now require an explicit `SIZZLE_TTS_API_KEY`, without falling back to an ambient provider key; the tools guide describes migration. Default provider configuration is unchanged.
+- Omit response bodies, endpoint URLs and exception text from transport errors. Preserve output-path containment, explicit overwrite behavior, trusted local command configuration and the 120-second default command timeout.
+
 ## Unreleased: optional coaching checkpoint
 
 - Add a self-contained opt-in practice/review guide with a fictional task, preserved baseline, explicit scope/budget, user stop, reviewed keep/revert and private-by-choice records. Keep native operations, existing method budgets and evidence rules unchanged; no human efficacy or outside-use result is claimed.
