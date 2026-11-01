@@ -20,10 +20,12 @@ These keys are used only at their provider's default HTTPS origin. Custom endpoi
 explicitly, without falling back to the provider key. HTTPS is required except for literal loopback IPs or
 localhost. Redirects are refused. Flags override the variables. Keys are never printed or logged.
 
-Each take is one paid request: there are no automatic retries. Providers that return the same audio for the
-same text give one distinct take; vary the punctuation or --style instead. Every request is appended to a
-generation log (generation-log.jsonl beside the output, or --log). Audio is converted to the output's
-extension with ffmpeg when the provider returns another format. Standard library only, plus ffmpeg.
+Each take makes one provider or command attempt: there are no automatic retries. Providers that return the
+same audio for the same text give one distinct take; vary the punctuation or --style instead. Only successful
+saved takes are appended to generation-log.jsonl beside the output (or --log). Failed or uncertain requests
+may still incur a provider charge without a local log entry; inspect the provider's records before retrying.
+Audio is converted to the output's extension with ffmpeg when the provider returns another format.
+Standard library only, plus ffmpeg.
 
 --lines ids become file names inside --dir, so they must be plain names (no path separators, "..", absolute
 paths, or NUL); anything that would resolve outside --dir is refused before a request is paid for. Existing

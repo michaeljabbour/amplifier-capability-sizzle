@@ -102,7 +102,7 @@ SIZZLE_TTS_COMMAND='aws polly synthesize-speech --engine neural --output-format 
 
 With `--lines`, each `id` becomes a file name inside `--dir`, so it must be a plain name: ids containing `/`, `\`, `..`, an absolute path or a NUL byte are refused before any request is made. Existing files are overwritten by default; pass `--no-overwrite` to refuse instead.
 
-Each take is one request, and the tool never retries on its own: a repeated request spends credits again. A provider that returns the same audio for the same text gives one distinct take, so vary the punctuation or the style instead. Every request is appended to `generation-log.jsonl` beside the output (or `--log`), without the key.
+Each take is one request, and the tool never retries on its own: a repeated request spends credits again. A provider that returns the same audio for the same text gives one distinct take, so vary the punctuation or the style instead. Only successful saved takes are appended to `generation-log.jsonl` beside the output (or `--log`), without the key. Failed or uncertain requests may still incur a provider charge without a local log entry; inspect the provider's records before retrying.
 
 Then measure every take:
 

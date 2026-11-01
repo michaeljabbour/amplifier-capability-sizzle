@@ -107,7 +107,7 @@
   </section>
 
   <section id="voice" class="section voice-section" aria-labelledby="voice-title">
-    <div class="section-heading"><div><p class="eyebrow">Bring your own voice</p><h2 id="voice-title">Any text-to-speech<br>provider.</h2></div><p>Name the provider, the voice and the model in the environment. Keys stay in environment variables, never in project files or chat. Every request is logged without its key, and nothing is retried on its own.</p></div>
+    <div class="section-heading"><div><p class="eyebrow">Bring your own voice</p><h2 id="voice-title">Any text-to-speech<br>provider.</h2></div><p>Name the provider, the voice and the model in the environment. Keys stay in environment variables, never in project files or chat. Only successful saved takes are logged, without keys. Failed or uncertain requests may still be charged; inspect provider records before retrying. Nothing retries on its own.</p></div>
     <div class="table-wrap"><table class="provider-table"><thead><tr><th scope="col">Provider</th><th scope="col"><code>SIZZLE_TTS_PROVIDER</code></th><th scope="col">Keys</th><th scope="col"><code>SIZZLE_TTS_VOICE</code></th></tr></thead><tbody>@@PROVIDERS@@</tbody></table></div>
     <p class="note">Check the setup with <code>python3 tools/tts.py --check</code>. It reports which variables are set and never prints a key.</p>
   </section>
